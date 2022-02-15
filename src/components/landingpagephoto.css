@@ -1,0 +1,41 @@
+#landingpagephoto{
+    height: 400px;
+    width: 100%;
+}
+
+.logIn{
+    margin-right: 5px;
+    background-image: linear-gradient(-180deg, #1e3038 0%, #1E96C8 100%);
+    border-radius: .5rem;
+    box-sizing: border-box;
+    color: #FFFFFF;
+    display: flex;
+    font-size: 13px;
+    justify-content: center;
+    padding: 1rem 1.75rem;
+    text-decoration: none;
+    border: 0;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    
+}
+
+.logIn:hover {
+    background-image: linear-gradient(-180deg, #1D95C9 0%, #17759C 100%);
+  }
+
+.landingButtons{
+    display: flex;
+    flex-wrap: nowrap;
+    margin-left: 90px;
+}
+
+h5{
+    text-align: center;
+}
+
+
+
+

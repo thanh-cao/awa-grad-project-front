@@ -3,6 +3,7 @@ import React from 'react';
 
 class Login extends React.Component {
   
+  
 
   render() {
     return (
@@ -11,7 +12,7 @@ class Login extends React.Component {
             <h1 className='logInH1'>Login</h1>
             <div className='inputFields'>
                 <label>
-                <input type="text" placeholder='Username' id='name'/>
+                <input type="text" placeholder='E-mail' id='name'/>
                 </label>
                 <br></br> 
                 <label>
@@ -27,3 +28,4 @@ class Login extends React.Component {
 }
 
 export default Login;
+
