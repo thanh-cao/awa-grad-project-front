@@ -1,3 +1,6 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500&display=swap');
+
 .App {
   text-align: center;
 }
@@ -35,4 +38,113 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+
+/* peopleFeed and userFeed CSS */
+
+body {
+  margin: 0;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: block;
+  width: 100%;
+}
+
+.people-feed {
+  font-family: Poppins;
+  background: white;
+  padding: 0;
+  margin: 0;
+}
+
+.header {
+  background-color: rgb(114, 184, 207);
+  height: 75px;
+}
+
+.footer {
+  background-color: rgb(114, 184, 207);
+  position: relative;
+  bottom: 0;
+  height: 30px;   
+  margin-top: 10px;
+}
+
+.header-peoplefeed {
+  margin-top: 10px;
+  margin-bottom: 0px;
+  margin-left: 10px;
+  line-height: 95%;
+}
+
+.searchedDest {
+  margin-left: 25px;
+  font-weight: lighter;
+  font-style: italic;
+  height: 30px;
+}
+
+.menu-items {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  height: auto;
+  width: auto;
+  font-size: 12px;
+  font-weight: bold;
+  border-radius: 8px;
+  justify-content: center;
+  margin-left: auto;
+}
+
+.profile-card {
+  margin-top: 2px;
+  margin-bottom: 5px;
+  margin-left: 5px; 
+  margin-right: 5px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+}
+
+img {
+  height: auto;
+  width: 100px;
+}
+
+.inner-profile-card {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.name-title {
+  margin-left: 10px;
+  font-size: 25px;
+  margin-top: 0px;
+  margin-bottom: 7px;
+}
+
+.profile-info {
+  margin-left: 12px;
+  margin-top: 0px;
+  margin-bottom: 15px;
+  font-size: 12px;
+}
+
+.event-genre {
+  font-weight: bold;
+  font-style: italic;
 }
