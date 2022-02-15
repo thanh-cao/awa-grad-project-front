@@ -1,36 +1,65 @@
 import React from 'react';
-// import {Link} from "react-router-dom";
+import {Link} from "react-router-dom";
+import dateFormat, { masks } from "dateformat";
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 
 
 class ProfilePage extends React.Component{
-    componentDidMount(){
+    constructor(props){
+        super(props)
 
+        this.state = {
+            user: {},
+            isLoading: true
+        }
+    }
+
+    componentDidMount(){
+        const {id} = this.props.match.params
+
+        fetch(`${process.env.REACT_APP_API_URL}/users/${id}`)
+        .then(res => res.json())
+        .then(data => {
+            this.setState({user: data, isLoading: false})
+
+        });
     }
 
     render(){
+        const isLoading = this.state.isLoading;
+
+        if(isLoading){
+            return <div>Loading....</div>
+        }
+
+        const {id, name, createdAt, about, profilePicture, interests, languages} = this.state.user
+        const firstName = name.split(' ')[0] 
+
+        const date = new Date(createdAt)
+        const joined = dateFormat(date, 'mmmm, yyyy');
+
         return(
             <div className="profile-page">
                 <div className="main-info">
-                    <img src={profilePlaceholder} alt="profile picture"/>
+                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt="profile picture"/>
                     <div>
-                        <h2>Hi, I'm Jane!</h2>
-                        <p><small>Joined in February 2021 </small></p>
+                        <h2>Hi, I'm {firstName}</h2>
+                        <p><small>Joined in {joined} </small></p>
                         <p><small>12 Reviews</small></p>
-                        <a href="#">Write a review for Jane</a>
+                        <Link to="#">Write a review for {firstName}</Link>
                     </div>
                 </div>
                 <hr />
                 <div className="about-info">
                     <h3>About</h3>
-                    <p>I'm from Oslo, Norway and a lone traveller of the milennials. I want to make new friends along the way and just explore the unbeaten path and eat the best foods in the city I visit.</p>
+                    <p>{about ? about : `no info added yet..`}</p>
                     <h4>Interest</h4>
-                    <p>I love going to museums and eat all the local foods. Parties could be fun too but I'm also up to just a quiet and cosy evening with talks.</p>
+                    <p>{interests ? interests  : `No info added yet..`}</p>
                     <div className="extra-info">
                         <p>From Oslo, Norway</p>
-                        <p>Speaks English, Norsk</p>
+                        <p>Speaks {languages}</p>
                     </div>
-                    <div className="edit-profile-btn">Edit</div>
+                    <Link to={`/edit/${id}`} className="edit-profile-btn">Edit</Link>
                 </div>
                 <hr />
                 <div className="user-reviews">
@@ -45,7 +74,7 @@ class ProfilePage extends React.Component{
                             </div>
                         </div>
                     </div>
-                    <div clasName="review">
+                    <div className="review">
                         <p>I had an amazing time showing Jane around my beloved Paris and just spent the lazy days from one French bakery to another.</p>
                         <div className="review-user">
                             <img src={profilePlaceholder}/>
