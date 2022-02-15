@@ -1,7 +1,7 @@
 import React from "react";
-import holmenkollen from "./photos/holmenkollen.PNG";
-import osloSpektrum from "./photos/osloSpektrum.PNG";
-import chicago from "./photos/chicagoMusical.PNG";
+import holmenkollen from "../photos/holmenkollen.PNG";
+import osloSpektrum from "../photos/osloSpektrum.PNG";
+import chicago from "../photos/chicagoMusical.PNG";
 
 class eventFeed extends React.Component {
   render() {
