@@ -1,6 +1,6 @@
 import React from "react";
-import femalePhoto from "./photos/sampleprofilephotofemale.png";
-import malePhoto from "./photos/sampleprofilephotomale.PNG";
+import femalePhoto from "../photos/sampleprofilephotofemale.png";
+import malePhoto from "../photos/sampleprofilephotomale.PNG";
 
 class peopleFeed extends React.Component {
   render() {
@@ -17,7 +17,7 @@ class peopleFeed extends React.Component {
           <h5>Events</h5>
         </div>
         <div className="profile-card">
-          <img src={femalePhoto} />
+          <img src={femalePhoto} alt="femalesample" />
           <div className="inner-profile-card">
             <h3 className="name-title">Thanh</h3>
             <p className="profile-info">
@@ -28,7 +28,7 @@ class peopleFeed extends React.Component {
           </div>
         </div>
         <div className="profile-card">
-          <img src={malePhoto} />
+          <img src={malePhoto} alt="malesample" />
           <div className="inner-profile-card">
             <h3 className="name-title">Suleman</h3>
             <p className="profile-info">
@@ -39,7 +39,7 @@ class peopleFeed extends React.Component {
           </div>
         </div>
         <div className="profile-card">
-          <img src={malePhoto} />
+          <img src={malePhoto} alt="malesample" />
           <div className="inner-profile-card">
             <h3 className="name-title">Frederik</h3>
             <p className="profile-info">
@@ -50,7 +50,7 @@ class peopleFeed extends React.Component {
           </div>
         </div>
         <div className="profile-card">
-          <img src={femalePhoto} />
+          <img src={femalePhoto} alt="femalesample" />
           <div className="inner-profile-card">
             <h3 className="name-title">Daniela</h3>
             <p className="profile-info">
