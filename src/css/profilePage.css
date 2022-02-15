@@ -17,7 +17,10 @@
   border-radius: 50%;
   object-fit: cover;
 }
-.profile-page .main-info h2 {
+.profile-page .main-info div {
+  padding-left: 30px;
+}
+.profile-page .main-info div h2 {
   font-size: 30px;
 }
 .profile-page .about-info {
