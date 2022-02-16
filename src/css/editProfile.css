@@ -1,0 +1,50 @@
+.edit-profile {
+  margin: 20px;
+}
+.edit-profile .imageUpload {
+  text-align: center;
+}
+.edit-profile .imageUpload img {
+  width: 100%;
+  max-width: 300px;
+  border: 1px solid #c8c8c8;
+  display: block;
+  margin: 0 auto 10px auto;
+}
+.edit-profile div {
+  margin-top: 30px;
+}
+.edit-profile input, .edit-profile textarea {
+  display: block;
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid #e6e6e6;
+}
+.edit-profile select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  background: white;
+}
+.edit-profile button {
+  padding: 15px 30px;
+  text-transform: uppercase;
+  border-radius: 4px;
+  border: 1px solid #6200EE;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+.edit-profile button.save-btn {
+  background-color: #6200EE;
+  color: white;
+}
+.edit-profile button.cancel-btn {
+  background-color: white;
+  color: #6200EE;
+}
+
+/*# sourceMappingURL=editProfile.css.map */
