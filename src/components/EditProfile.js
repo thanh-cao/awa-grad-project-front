@@ -23,11 +23,11 @@ class EditProfile extends React.Component {
                 console.log(user);
                 this.setState({
                     isLoading: false,
-                    profilePitcure: user.profilePicture,
+                    profilePicture: user.profilePicture,
                     about: user.about,
                     interests: user.interests,
                     languages: user.languages,
-                    location: user.locations
+                    location: user.location
                 })
             })
     }
@@ -56,8 +56,16 @@ class EditProfile extends React.Component {
 
 
     handleChange(e, field) {
+        let value = this.state.languages;
+
+        if(field === 'languages'){
+            value.push(e.target.value)
+        } else {
+            value = e.target.value;
+        }
+
         this.setState({
-            [field]: e.target.value
+            [field]: value
         })
     }
 
@@ -75,6 +83,15 @@ class EditProfile extends React.Component {
             .then(result => this.setState({profilePicture: result}));
     }
 
+    removeLanguage(lang){
+        const languages = this.state.languages;
+        const index = languages.indexOf(lang);
+        languages.splice(index, 1)
+        
+        this.setState({languages})
+
+    }
+
     render() {
         const { isLoading, profilePicture, about, interests, languages, location } = this.state;
 
@@ -89,7 +106,8 @@ class EditProfile extends React.Component {
                     className="edit-form"
                     onSubmit={(e) => this.handleSubmit(e)}>
                     <div className="imageUpload">
-                        {profilePicture ? profilePicture : <img src={placeholderImg} />}
+                        {profilePicture && <img src={profilePicture} />}
+                        {!profilePicture && <img src={placeholderImg} />}
                         <input
                             type="file"
                             id="profilePicture"
@@ -115,14 +133,21 @@ class EditProfile extends React.Component {
                     </div>
                     <div className="location">
                         <label>Location</label>
-                        <input type="text" value={location} />
+                        <input 
+                        type="text" 
+                        value={location} 
+                        onChange={(e) => this.handleChange(e, 'location')}
+                        />
 
                     </div>
                     <div>
-                        <label>Language</label>
+                        <label>Languages</label>
+                            <div>
+                                {languages && languages.map(lang => <p><button className="remove-language" onClick={() => this.removeLanguage(lang)}>x</button><small>{lang}</small></p> )}
+                            </div>
                         <select
-                            onChange={(e) => this.handleChange(e, 'language')}
-                            multiple>
+                            onChange={(e) => this.handleChange(e, 'languages')}
+                            >
                             <option>English</option>
                             <option>Norwegian</option>
                             <option>Swedish</option>
@@ -131,9 +156,9 @@ class EditProfile extends React.Component {
                         </select>
                     </div>
                     <button
-                        className="save-btn"
+                        className="save-btn btn"
                         type="submit">Save</button>
-                    <button className="cancel-btn">Cancel</button>
+                    <button className="cancel-btn btn">Cancel</button>
                 </form>
             </div>
         )
