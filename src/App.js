@@ -11,7 +11,7 @@ import LandingPage from './components/landingPage';
 import Search from './components/searchPage';
 
 import ProfilePage from './components/ProfilePage';
-import CreateProfile from './components/CreateProfile';
+import EditProfile from './components/EditProfile';
 
 
 import './App.css';
@@ -29,11 +29,11 @@ function App() {
       <Route path="/signup" component={SignUp} />
       <Route path="/landingpage" component={LandingPage} />
  
-     <Route path="/search" component={Search} />
+      <Route path="/search" component={Search} />
 
-
+      <Route path="/users/:id/edit" component={EditProfile}/>
       <Route path="/users/:id" component={ProfilePage} />
-      <Route path="/createProfile/:id" component={CreateProfile} />
+      
 
     </Switch>
   </HashRouter>

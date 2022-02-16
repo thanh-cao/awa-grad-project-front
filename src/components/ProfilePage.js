@@ -59,7 +59,7 @@ class ProfilePage extends React.Component{
                         <p>From Oslo, Norway</p>
                         <p>Speaks {languages}</p>
                     </div>
-                    <Link to={`/edit/${id}`} className="edit-profile-btn">Edit</Link>
+                    <Link to={`/users/${id}/edit`} className="edit-profile-btn">Edit</Link>
                 </div>
                 <hr />
                 <div className="user-reviews">
