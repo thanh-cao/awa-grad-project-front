@@ -4,12 +4,9 @@ import React from 'react';
 import Login from './components/Login';
 import peopleFeed from './components/peopleFeed';
 import eventFeed from './components/eventFeed';
-
 import SignUp from './components/signUp';
 import LandingPage from './components/landingPage';
-
 import Search from './components/searchPage';
-
 import ProfilePage from './components/ProfilePage';
 import EditProfile from './components/EditProfile';
 
