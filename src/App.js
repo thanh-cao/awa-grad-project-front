@@ -1,5 +1,6 @@
 import { HashRouter, Switch, Route } from 'react-router-dom';
-import React from 'react';
+import React, { Component } from 'react';
+
 
 import Login from './components/Login';
 import peopleFeed from './components/peopleFeed';
@@ -18,26 +19,51 @@ import './App.css';
 import './components/Login.css'
 import './components/landingpagephoto.css'
 
-function App() {
-  return (
-    <HashRouter>
-    <Switch>
-      <Route path="/login" component={Login} />
-      <Route path="/peoplefeed" component={peopleFeed} />
-      <Route path="/eventfeed" component={eventFeed} />
+const { authenticateUser } = require('./components/loginUser');
 
-      <Route path="/signup" component={SignUp} />
-      <Route path="/landingpage" component={LandingPage} />
- 
-     <Route path="/search" component={Search} />
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      isAuthenticated: false
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const user = await authenticateUser();
+      if (!user.error) {
+        this.setState({
+          user: user,
+          isAuthenticated: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  render () {
+    return (
+      <HashRouter>
+      <Switch>
+        <Route path="/users/login" component={Login} />
+        <Route path="/users/peoplefeed" component={peopleFeed} />
+        <Route path="/users/eventfeed" component={eventFeed} />
+
+        <Route path="/signup" component={SignUp} />
+        <Route path="/landingpage" component={LandingPage} />
+  
+        <Route path="/users/search" component={Search} />
 
 
-      <Route path="/users/:id" component={ProfilePage} />
-      <Route path="/createProfile/:id" component={CreateProfile} />
+        <Route path="/users/:id" component={ProfilePage} />
+        <Route path="/createProfile/:id" component={CreateProfile} />
 
-    </Switch>
-  </HashRouter>
-  );
+      </Switch>
+    </HashRouter>
+    );
+  }
 }
 
 export default App;

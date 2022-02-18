@@ -2,12 +2,16 @@ import React from "react";
 import holmenkollen from "../photos/holmenkollen.PNG";
 import osloSpektrum from "../photos/osloSpektrum.PNG";
 import chicago from "../photos/chicagoMusical.PNG";
+import SimpleMap from "./maps"
 
 class eventFeed extends React.Component {
   render() {
     return (
       <div className="people-feed">
         <div className="header"></div>
+        <SimpleMap>
+
+        </SimpleMap>
         <h1 className="header-peoplefeed">
           Destination
           <br></br>
