@@ -6,7 +6,17 @@ import peopleFeed from "./components/peopleFeed";
 import eventFeed from "./components/eventFeed";
 import SimpleMap from "./components/map";
 
+import SignUp from "./components/signUp";
+import LandingPage from "./components/landingPage";
+
+import Search from "./components/searchPage";
+
+import ProfilePage from "./components/ProfilePage";
+import EditProfile from "./components/EditProfile";
+
 import "./App.css";
+import "./components/Login.css";
+import "./components/landingpagephoto.css";
 import "./components/map.css";
 
 function App() {
@@ -17,6 +27,14 @@ function App() {
         <Route path="/peoplefeed" component={peopleFeed} />
         <Route path="/eventfeed" component={eventFeed} />
         <Route path="/map" component={SimpleMap} />
+
+        <Route path="/signup" component={SignUp} />
+        <Route path="/landingpage" component={LandingPage} />
+
+        <Route path="/search" component={Search} />
+
+        <Route path="/users/:id/edit" component={EditProfile} />
+        <Route path="/users/:id" component={ProfilePage} />
       </Switch>
     </HashRouter>
   );

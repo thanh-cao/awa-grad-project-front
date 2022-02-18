@@ -1,0 +1,63 @@
+.edit-profile {
+    margin: 20px;
+
+    .imageUpload{
+        text-align: center;
+
+        img {
+            width: 100%;
+            max-width: 300px;
+            border: 1px solid rgb(200,200,200);
+            display: block;
+            margin: 0 auto 10px auto;
+        }
+    }
+
+    div {
+        margin-top: 30px;
+    }
+
+    input, textarea {
+        display: block;
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid rgb(230,230,230);
+    }
+
+    select {
+        width: 100%;
+        padding: 12px 20px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        background: white;
+    }
+
+    .remove-language {
+        border: 1px solid rgb(150,150,150);
+        border-radius: 4px;
+        font-weight: 400;
+        margin-right: 10px;
+    }
+
+    .btn{
+        padding: 15px 30px;
+        text-transform: uppercase;
+        border-radius: 4px;
+        border: 1px solid #6200EE;
+        margin-top: 20px;
+        margin-right: 20px;
+
+        &.save-btn {
+            background-color: #6200EE;
+            color: white;
+        }
+
+        &.cancel-btn{
+            background-color: white;
+            color: #6200EE;
+        }
+    }
+}

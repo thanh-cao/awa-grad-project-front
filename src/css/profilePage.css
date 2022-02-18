@@ -1,0 +1,67 @@
+.profile-page {
+  margin: 50px 30px;
+}
+.profile-page p, .profile-page ul {
+  margin: 0;
+  padding: 0;
+}
+.profile-page .main-info {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 50px;
+  text-align: right;
+}
+.profile-page .main-info img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.profile-page .main-info div {
+  padding-left: 30px;
+}
+.profile-page .main-info div h2 {
+  font-size: 30px;
+}
+.profile-page .about-info {
+  text-align: left;
+  margin-bottom: 50px;
+  padding-top: 20px;
+  position: relative;
+}
+.profile-page .about-info .extra-info {
+  font-size: 14px;
+  margin-top: 20px;
+}
+.profile-page .about-info .extra-info p {
+  margin: 10px 0;
+}
+.profile-page .about-info .edit-profile-btn {
+  position: absolute;
+  top: 8px;
+  right: 10px;
+  border: 1px solid #646464;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+.profile-page .user-reviews {
+  text-align: left;
+}
+.profile-page .user-reviews .review {
+  margin-bottom: 30px;
+}
+.profile-page .user-reviews .review-user {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 12px;
+}
+.profile-page .user-reviews img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+/*# sourceMappingURL=profilePage.css.map */
