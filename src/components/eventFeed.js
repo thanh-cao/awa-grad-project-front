@@ -18,10 +18,6 @@ class eventFeed extends React.Component {
     };
   }
 
-  handleClick = () => {
-    window.open(URL);
-  };
-
   async componentDidMount() {
     try {
       this.setState({ isLoading: true });
@@ -34,17 +30,17 @@ class eventFeed extends React.Component {
           const venueName = event["_embedded"].venues[0].name;
           const dates = event.dates.start;
           const url = event.url;
-          console.log(url);
           if (!eventLocation.find((el) => el.name === event.name)) {
             eventLocation.push({
               lat: location.latitude,
               lng: location.longitude,
               id: event.id,
               name: event.name,
+              image: event.images[0],
               venue: venueName,
               date: dates["localDate"],
               time: dates["localTime"],
-              url: event.url,
+              url: url,
             });
           }
         });
@@ -80,10 +76,17 @@ class eventFeed extends React.Component {
     const eventElements = events.map((event) => {
       return (
         <div key={event.id} className="event-box">
-          <li className="event">
-            {event.name} {event.venue} {event.date} {event.time}
-          </li>
-          <button onClick={this.handleClick}>View event</button>
+          <a className="link-text" href={event.url}>
+            <li className="event">
+              <h4 className="name-title">
+                <span className="link-text">{event.name}</span>
+              </h4>
+              <h5 className="venue-text">Venue: {event.venue} </h5>
+              <h6 className="date-text">
+                Date: {event.date} at {event.time}
+              </h6>
+            </li>
+          </a>
         </div>
       );
     });
