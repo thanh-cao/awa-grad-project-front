@@ -1,7 +1,6 @@
 import { HashRouter, Switch, Route } from 'react-router-dom';
 import React, { Component } from 'react';
 
-
 import Login from "./components/Login";
 import peopleFeed from "./components/peopleFeed";
 import eventFeed from "./components/eventFeed";
