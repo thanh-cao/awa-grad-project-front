@@ -59,8 +59,9 @@ class App extends Component {
         <Route path="/signup" component={SignUp} />
         <Route path="/landingpage" component={LandingPage} />
 
+        <Route path="/users/:id/edit" component={EditProfile} />
         <Route path="/users/:id" component={ProfilePage} />
-        <Route path="/createProfile/:id" component={CreateProfile} />
+        
 
       </Switch>
     </HashRouter>
