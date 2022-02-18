@@ -1,7 +1,6 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500&display=swap');
-@import './css/profilePage.css';
-@import './css/editProfile.css';
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500&display=swap");
+@import "./css/profilePage.css";
+@import "./css/editProfile.css";
 
 .App {
   text-align: center;
@@ -42,7 +41,6 @@
   }
 }
 
-
 /* peopleFeed and userFeed CSS */
 
 body {
@@ -73,7 +71,7 @@ html {
   background-color: rgb(114, 184, 207);
   position: relative;
   bottom: 0;
-  height: 30px;   
+  height: 30px;
   margin-top: 10px;
 }
 
@@ -110,10 +108,23 @@ button {
   margin-left: auto;
 }
 
+ul.events {
+  margin: 0;
+  padding: 0;
+}
+
+.event {
+  border: 2px solid black;
+  width: 100%;
+  display: flex;
+  align-content: center;
+  flex-direction: column;
+}
+
 .profile-card {
   margin-top: 2px;
   margin-bottom: 5px;
-  margin-left: 5px; 
+  margin-left: 5px;
   margin-right: 5px;
   padding: 0px;
   display: flex;
@@ -133,10 +144,26 @@ img {
 }
 
 .name-title {
-  margin-left: 10px;
-  font-size: 25px;
+  font-size: 20px;
   margin-top: 0px;
   margin-bottom: 7px;
+  margin-left: 3px;
+}
+
+.link-text {
+  text-decoration: none;
+}
+
+.date-text {
+  margin-left: 5px;
+}
+
+.venue-text {
+  margin-left: -180px;
+}
+
+h5 {
+  margin: 0;
 }
 
 .profile-info {
@@ -146,7 +173,20 @@ img {
   font-size: 12px;
 }
 
+.event-box {
+  width: auto;
+  margin-right: 15px;
+  margin-top: 5px;
+}
+
 .event-genre {
   font-weight: bold;
   font-style: italic;
+}
+
+li {
+  list-style: none;
+  margin: 5px;
+  width: 100%;
+  border-radius: 15px;
 }
