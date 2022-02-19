@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import { getUserProfile, getUserReviews } from "../services/users";
+import WriteReviewModal from "./WriteReviewModel";
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class ProfilePage extends React.Component {
         }
     }
 
-    async componentDidMount() {
+    async populateUserData() {
         const { id } = this.props.match.params
         const user = await getUserProfile(id);
         const reviews = await getUserReviews(id);
@@ -25,6 +26,19 @@ class ProfilePage extends React.Component {
             reviews,
             isLoading: false
         })
+    }
+
+    componentDidMount() {
+        this.populateUserData();
+    }
+
+    componentDidUpdate(prevProps) {
+        if (prevProps.match.params.id !== this.props.match.params.id) {
+            this.setState({
+                isLoading: true
+            })
+            return this.populateUserData();
+        }
     }
 
     render() {
@@ -57,15 +71,16 @@ class ProfilePage extends React.Component {
                 </div>
             )
         });
+
         return (
             <div className="profile-page">
                 <div className="main-info">
-                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName +' profile'} />
+                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName + ' profile'} />
                     <div>
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
-                        <p><small>{reviews.count} Reviews</small></p>
-                        <Link to="#">Write a review for {firstName}</Link>
+                        <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}><small>{reviews.count} Reviews</small></p>
+                        <WriteReviewModal receiverId={id} name={name} refresh={this.populateUserData.bind(this)}/>
                     </div>
                 </div>
                 <hr />
@@ -81,7 +96,7 @@ class ProfilePage extends React.Component {
                     <Link to={`/users/${id}/edit`} className="edit-profile-btn">Edit</Link>
                 </div>
                 <hr />
-                <div className="user-reviews">
+                <div id="userReviews" className="user-reviews">
                     <h3>Reviews <span>({reviews.count})</span></h3>
 
                     {reviewList}

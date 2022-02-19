@@ -17,6 +17,7 @@ import EditProfile from './components/EditProfile';
 import './App.css';
 import './components/Login.css'
 import './components/landingpagephoto.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
