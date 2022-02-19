@@ -1,51 +1,70 @@
 import React from 'react';
-import {Link} from "react-router-dom";
-import dateFormat, { masks } from "dateformat";
+import { Link } from "react-router-dom";
+import dateFormat from "dateformat";
 import profilePlaceholder from "../photos/profilePlaceholder.png";
+import { getUserProfile, getUserReviews } from "../services/users";
 
-
-class ProfilePage extends React.Component{
-    constructor(props){
+class ProfilePage extends React.Component {
+    constructor(props) {
         super(props)
 
         this.state = {
             user: {},
+            reviews: [],
             isLoading: true
         }
     }
 
-    componentDidMount(){
-        const {id} = this.props.match.params
+    async componentDidMount() {
+        const { id } = this.props.match.params
+        const user = await getUserProfile(id);
+        const reviews = await getUserReviews(id);
 
-        fetch(`${process.env.REACT_APP_API_URL}/users/${id}`)
-        .then(res => res.json())
-        .then(data => {
-            this.setState({user: data, isLoading: false})
-
-        });
+        this.setState({
+            user,
+            reviews,
+            isLoading: false
+        })
     }
 
-    render(){
+    render() {
         const isLoading = this.state.isLoading;
 
-        if(isLoading){
+        if (isLoading) {
             return <div>Loading....</div>
         }
 
-        const {id, name, createdAt, about, profilePicture, interests, languages} = this.state.user
-        const firstName = name.split(' ')[0] 
+        const { id, name, createdAt, about, profilePicture, interests, languages } = this.state.user
+        const { reviews } = this.state;
+        const firstName = name.split(' ')[0]
 
         const date = new Date(createdAt)
         const joined = dateFormat(date, 'mmmm, yyyy');
 
-        return(
+        const reviewList = reviews.rows.map(review => {
+            let reviewDate = new Date(review.createdAt)
+            reviewDate = dateFormat(reviewDate, 'mmmm, yyyy');
+            return (
+                <div className="review" key={review.id}>
+                    <p>{review.content}</p>
+                    <div className="review-user">
+                        <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture : profilePlaceholder} alt={review.reviewer.name + ' profile picture'} />
+                        <div>
+                            <p>{review.reviewer.name}, {review.reviewer.location}</p>
+                            <p>{reviewDate}</p>
+                        </div>
+                    </div>
+                </div>
+            )
+        });
+        return (
             <div className="profile-page">
                 <div className="main-info">
-                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt="profile picture"/>
+                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName +' profile'} />
                     <div>
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
-                        <p><small>12 Reviews</small></p>
+                        <p><small>{reviews.count} Reviews</small></p>
                         <Link to="#">Write a review for {firstName}</Link>
                     </div>
                 </div>
@@ -54,7 +73,7 @@ class ProfilePage extends React.Component{
                     <h3>About</h3>
                     <p>{about ? about : `no info added yet..`}</p>
                     <h4>Interest</h4>
-                    <p>{interests ? interests  : `No info added yet..`}</p>
+                    <p>{interests ? interests : `No info added yet..`}</p>
                     <div className="extra-info">
                         <p>From Oslo, Norway</p>
                         <p>Speaks {languages}</p>
@@ -63,27 +82,10 @@ class ProfilePage extends React.Component{
                 </div>
                 <hr />
                 <div className="user-reviews">
-                    <h3>Reviews <span>(12)</span></h3>
-                    <div className="review">
-                        <p>I met Jane in Lisbon last month and she is an amazing person. She is very interesting to talk to and fun to go out with.</p>
-                        <div className="review-user">
-                            <img src={profilePlaceholder}/>
-                            <div>
-                                <p>Alexandra, Lisbon, Portugal</p>
-                                <p>January 2022</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="review">
-                        <p>I had an amazing time showing Jane around my beloved Paris and just spent the lazy days from one French bakery to another.</p>
-                        <div className="review-user">
-                            <img src={profilePlaceholder}/>
-                            <div>
-                                <p>Joseph, Paris, France</p>
-                                <p>November 2021</p>
-                            </div>
-                        </div>
-                    </div>
+                    <h3>Reviews <span>({reviews.count})</span></h3>
+
+                    {reviewList}
+
                 </div>
             </div>
         )
