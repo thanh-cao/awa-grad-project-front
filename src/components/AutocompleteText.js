@@ -1,5 +1,5 @@
 import React from "react";
-
+import {Form} from "react-bootstrap";
 class AutocompleteText extends React.Component {
     constructor(props) {
         super(props)
@@ -82,13 +82,15 @@ class AutocompleteText extends React.Component {
         const { input } = this.state;
 
         return (
-            <div>
-                <input
+            <Form.Group>
+                {this.props.label && <Form.Label>{this.props.label}</Form.Label>}
+                <Form.Control
+                    className="form-control"
                     type="text"
                     value={input}
                     onChange={(e) => this.handleChange(e)} />
                 {this.renderSuggestions()}
-            </div>
+            </Form.Group>
         )
     }
 }

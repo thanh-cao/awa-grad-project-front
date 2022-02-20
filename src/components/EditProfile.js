@@ -1,5 +1,6 @@
 import React from 'react';
 import { Country, City } from 'country-state-city';
+import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 
 import placeholderImg from '../photos/placeholder-image.png';
 import AutocompleteText from './AutocompleteText';
@@ -15,8 +16,8 @@ class EditProfile extends React.Component {
         this.state = {
             isLoading: true,
             profilePicture: null,
-            about: '',
-            interests: '',
+            about: ' ',
+            interests: ' ',
             languages: [],
             countrycode: '',
             country: '',
@@ -29,14 +30,13 @@ class EditProfile extends React.Component {
     async componentDidMount() {
         const { id } = this.props.match.params
         const user = await getUserProfile(id);
-        console.log(user)
         let cityList = City.getCitiesOfCountry(user.countrycode)
 
         this.setState({
             isLoading: false,
             profilePicture: user.profilePicture,
-            about: user.about,
-            interests: user.interests,
+            about: user.about || '',
+            interests: user.interests || '',
             languages: user.languages,
             countrycode: user.countrycode,
             country: user.location?.split(', ')[1],
@@ -92,7 +92,7 @@ class EditProfile extends React.Component {
         const formData = new FormData();
         formData.append('profilePicture', file);
         formData.append('oldPicture', this.state.profilePicture);
-        
+
         try {
             const imgUrl = await uploadImage(formData);
             this.setState({ profilePicture: imgUrl });
@@ -124,8 +124,80 @@ class EditProfile extends React.Component {
         }
 
         return (
-            <div className="edit-profile">
-                <form
+            <Container className="edit-profile">
+                <Form
+                    encType="multipart/form-data"
+                    onSubmit={(e) => this.handleSubmit(e)}>
+                    <Form.Group className="imageUpload">
+                        {profilePicture ? <img src={profilePicture} /> : <img src={placeholderImg}/>}
+                        
+                        <Form.Label>Upload profile picture</Form.Label>
+                        <Form.Control
+                            type="file"
+                            id="profilePicture"
+                            name="profilePicture"
+                            onChange={(e) => this.handleFileUpload(e)}
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>About me</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows="3"
+                            value={about}
+                            onChange={(e) => this.handleChange(e, 'about')}
+                        />
+                    </Form.Group>
+
+                    <Form.Group>
+                        <Form.Label>Interests</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows="3"
+                            value={interests}
+                            onChange={(e) => this.handleChange(e, 'interests')}
+                        />
+                    </Form.Group>
+
+                    {/* <Form.Group>
+                        <Form.Label>Languages</Form.Label>
+                        <Form.Control
+                            as="textarea"
+                            rows="3"
+                            value={languages}
+                            onChange={(e) => this.handleChange(e, 'languages')}
+                        />
+                    </Form.Group> */}
+                    <Row>
+                        <Col>
+                            <AutocompleteText
+                                label="Country"
+                                items={this.countries}
+                                currentValue={country}
+                                onLocationChange={this.changeLocation.bind(this)}
+                                type={'country'}
+                                countrycode={countrycode} />
+                        </Col>
+                        <Col>
+                            <AutocompleteText
+                                label="City"
+                                items={cityList}
+                                currentValue={city}
+                                onLocationChange={this.changeLocation.bind(this)}
+                                type={'city'}
+                                countrycode={countrycode} />
+                        </Col>
+                    </Row>
+
+                    <Button className="mt-3 me-2" variant="primary" type="submit">
+                        Update
+                    </Button>
+                    <Button className="mt-3" variant="outline-secondary" onClick={() => this.props.history.goBack()}>
+                        Cancel
+                    </Button>
+                </Form>
+                {/* <form
                     encType="multipart/form-data"
                     className="edit-form"
                     onSubmit={(e) => this.handleSubmit(e)}>
@@ -166,12 +238,12 @@ class EditProfile extends React.Component {
                                 type={'country'}
                                 countrycode={countrycode} />
 
-                            {/* <input 
+                            <input 
                             type="text" 
                             value={country}
                             onChange={(e) => this.handleChange(e, 'country')}
                             />
-                            {activeInput === 'country' && <div style={{background: 'rgb(240,240,240)', margin: 0}}>{suggestions}</div>} */}
+                            {activeInput === 'country' && <div style={{background: 'rgb(240,240,240)', margin: 0}}>{suggestions}</div>}
                         </div>
                         <div className="city">
                             <label>City</label>
@@ -182,13 +254,13 @@ class EditProfile extends React.Component {
                                 type={'city'}
                                 countrycode={countrycode} />
 
-                            {/* <input 
+                            <input 
                             disabled={countrycode === ''}
                             type="text" 
                             value={city}
                             onChange={(e) => this.handleChange(e, 'city')}
                             />
-                            {activeInput === 'city' && <div>{suggestions}</div>} */}
+                            {activeInput === 'city' && <div>{suggestions}</div>} 
                         </div>
                     </div>
                     <div>
@@ -214,8 +286,8 @@ class EditProfile extends React.Component {
                         className="save-btn btn"
                         type="submit">Save</button>
                     <button className="cancel-btn btn">Cancel</button>
-                </form>
-            </div>
+                </form> */}
+            </Container>
         )
     }
 }
