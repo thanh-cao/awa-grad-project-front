@@ -1,7 +1,10 @@
 import React from 'react';
+import { Country, City } from 'country-state-city';
+
 import placeholderImg from '../photos/placeholder-image.png';
-import { Country, City }  from 'country-state-city';
 import AutocompleteText from './AutocompleteText';
+import { getUserProfile, updateUserProfile } from '../services/users';
+import { uploadImage } from '../services/helpers';
 
 class EditProfile extends React.Component {
     constructor(props) {
@@ -25,28 +28,25 @@ class EditProfile extends React.Component {
 
     async componentDidMount() {
         const { id } = this.props.match.params
+        const user = await getUserProfile(id);
+        console.log(user)
+        let cityList = City.getCitiesOfCountry(user.countrycode)
 
-        await fetch(`${process.env.REACT_APP_API_URL}/users/${id}`)
-            .then(res => res.json())
-            .then(user => {
-                console.log(user)
-                let cityList = City.getCitiesOfCountry(user.countrycode)
-
-                this.setState({
-                    isLoading: false,
-                    profilePicture: user.profilePicture,
-                    about: user.about,
-                    interests: user.interests,
-                    languages: user.languages,
-                    countrycode: user.countrycode,
-                    country: user.location?.split(', ')[1],
-                    city: user.location?.split(', ')[0],
-                    cityList
-                })
-            })
+        this.setState({
+            isLoading: false,
+            profilePicture: user.profilePicture,
+            about: user.about,
+            interests: user.interests,
+            languages: user.languages,
+            countrycode: user.countrycode,
+            country: user.location?.split(', ')[1],
+            city: user.location?.split(', ')[0],
+            cityList
+        })
     }
 
-    handleSubmit(e) {
+
+    async handleSubmit(e) {
         const { id } = this.props.match.params
         e.preventDefault();
 
@@ -58,16 +58,12 @@ class EditProfile extends React.Component {
             countrycode: this.state.countrycode,
             location: `${this.state.city}, ${this.state.country}`
         }
-
-        console.log(updatedUser);
-        fetch(`${process.env.REACT_APP_API_URL}/users/${id}`, {
-            method: 'POST',
-            credentials: 'include',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(updatedUser)
-        })
+        try {
+            await updateUserProfile(id, updatedUser);
+            this.props.history.replace(`/users/${id}`);
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 
@@ -75,8 +71,8 @@ class EditProfile extends React.Component {
         let value = this.state.languages;
         let input = e.target.value;
 
-        if(field === 'languages'){
-            if(value.includes(input)){
+        if (field === 'languages') {
+            if (value.includes(input)) {
                 return;
             } else {
                 value.push(input)
@@ -90,42 +86,38 @@ class EditProfile extends React.Component {
         })
     }
 
-    handleFileUpload(e) {
+    async handleFileUpload(e) {
         e.preventDefault();
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append('profilePicture', file);
         formData.append('oldPicture', this.state.profilePicture);
-
-        fetch(`${process.env.REACT_APP_API_URL}/services/imageupload`, {
-            method: 'POST',
-            credentials: 'include',
-            body: formData
-        }).then(response => response.json())
-            .then(result => this.setState({profilePicture: result}));
+        
+        try {
+            const imgUrl = await uploadImage(formData);
+            this.setState({ profilePicture: imgUrl });
+        } catch (error) {
+            console.log(error);
+        }
     }
 
-    removeLanguage(lang){
+    removeLanguage(lang) {
         const languages = this.state.languages;
         const index = languages.indexOf(lang);
         languages.splice(index, 1)
-        
-        this.setState({languages})
+
+        this.setState({ languages })
 
     }
 
-    async changeLocation(field, value, code){
+    async changeLocation(field, value, code) {
         let cityList = City.getCitiesOfCountry(code)
-        console.log(field, value)
-        console.log(code, cityList)
-        await this.setState({[field]: value, countrycode: code, cityList})
-        console.log("editProfileState", this.state)
+        this.setState({ [field]: value, countrycode: code, cityList })
     }
 
-    
+
     render() {
-        let { isLoading, profilePicture, about, interests, languages, country, city, countrycode, cityList, suggestions} = this.state;
-        console.log(countrycode);
+        let { isLoading, profilePicture, about, interests, languages, country, city, countrycode, cityList, suggestions } = this.state;
 
         if (isLoading) {
             return <div>Loading...</div>
@@ -166,13 +158,13 @@ class EditProfile extends React.Component {
                     <div className="location">
                         <p>Location</p>
                         <div className="country">
-                        <label>Conutry</label>
-                            <AutocompleteText 
-                            items={this.countries} 
-                            currentValue={country}
-                            changeLocation={this.changeLocation.bind(this)}
-                            type={'country'}
-                            countrycode={countrycode}/>
+                            <label>Country</label>
+                            <AutocompleteText
+                                items={this.countries}
+                                currentValue={country}
+                                onLocationChange={this.changeLocation.bind(this)}
+                                type={'country'}
+                                countrycode={countrycode} />
 
                             {/* <input 
                             type="text" 
@@ -182,13 +174,13 @@ class EditProfile extends React.Component {
                             {activeInput === 'country' && <div style={{background: 'rgb(240,240,240)', margin: 0}}>{suggestions}</div>} */}
                         </div>
                         <div className="city">
-                        <label>City {this.state.cityList[2].name}</label>
-                            <AutocompleteText 
-                            items={cityList} 
-                            currentValue={city}
-                            //changeLocation={this.changeLocation.bind(this)}
-                            type={'city'}
-                            countrycode={countrycode}/>
+                            <label>City</label>
+                            <AutocompleteText
+                                items={cityList}
+                                currentValue={city}
+                                onLocationChange={this.changeLocation.bind(this)}
+                                type={'city'}
+                                countrycode={countrycode} />
 
                             {/* <input 
                             disabled={countrycode === ''}
@@ -201,16 +193,16 @@ class EditProfile extends React.Component {
                     </div>
                     <div>
                         <label>Languages</label>
-                            <div>
-                                {languages && languages.map((lang, i) => {
-                                    return (
-                                        <p key={i}><button className="remove-language" onClick={() => this.removeLanguage(lang)}>x</button><small>{lang}</small></p> 
-                                    )
-                                })}
-                            </div>
+                        <div>
+                            {languages && languages.map((lang, i) => {
+                                return (
+                                    <p key={i}><button className="remove-language" onClick={() => this.removeLanguage(lang)}>x</button><small>{lang}</small></p>
+                                )
+                            })}
+                        </div>
                         <select
                             onChange={(e) => this.handleChange(e, 'languages')}
-                            >
+                        >
                             <option>English</option>
                             <option>Norwegian</option>
                             <option>Swedish</option>

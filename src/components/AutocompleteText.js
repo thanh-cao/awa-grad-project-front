@@ -1,7 +1,7 @@
 import React from "react";
 
 class AutocompleteText extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props)
 
         this.state = {
@@ -12,7 +12,7 @@ class AutocompleteText extends React.Component {
         }
     }
 
-    componentDidMount(){
+    componentDidMount() {
         this.setState({
             ...this.state,
             input: this.props.currentValue,
@@ -21,67 +21,72 @@ class AutocompleteText extends React.Component {
         })
     }
 
-    selectedSuggestion(code, value){
-        console.log("selectedsuggestion", code)
+    componentDidUpdate(prevProps) {
+        if (prevProps.items !== this.props.items) {
             this.setState({
                 ...this.state,
-                input: value, 
-                suggestions: [], 
-                countrycode: code ? code : this.state.countrycode
+                items: this.props.items
             })
-        console.log("state", this.state)
-
-        this.props.changeLocation(this.props.type, value, code)
+        }
     }
 
-    handleChange(e){
+    selectedSuggestion(code, value) {
+        this.setState({
+            ...this.state,
+            input: value,
+            suggestions: [],
+            countrycode: code ? code : this.state.countrycode
+        })
+
+        this.props.onLocationChange && this.props.onLocationChange(this.props.type, value, code);
+    }
+
+    handleChange(e) {
         this.setState({
             ...this.state,
             items: this.props.items
         })
 
-        console.log("acitems", this.state.items)
-        
         const value = e.target.value;
         let suggestions = [];
-        if(value.length > 0){
+        if (value.length > 0) {
             const regex = new RegExp(`^${value}`, 'i');
             suggestions = this.state.items.sort().filter(item => {
                 return item.name.match(regex)
             });
-        } 
-        
+        }
+
         this.setState({ ...this.state, suggestions, input: value });
     }
 
-    renderSuggestions(){
+    renderSuggestions() {
         const suggestions = this.state.suggestions;
 
-        if(suggestions.length === 0) {
+        if (suggestions.length === 0) {
             return null
-        } 
+        }
 
         return (
             <ul>
-            {suggestions.map((item, i) => {
-                return <li 
-                key={item.isoCode || i + item.name}
-                onClick={() => this.selectedSuggestion(item.isoCode, item.name)}
-                >{item.name}</li>
-            })}
+                {suggestions.map((item, i) => {
+                    return <li
+                        key={item.isoCode || i + item.name}
+                        onClick={() => this.selectedSuggestion(item.isoCode, item.name)}
+                    >{item.name}</li>
+                })}
             </ul>
         )
     }
 
-    render(){
-        const {input} = this.state;
+    render() {
+        const { input } = this.state;
 
-        return(
+        return (
             <div>
-                <input 
-                type="text"
-                value={input}
-                onChange={(e) => this.handleChange(e)}/>
+                <input
+                    type="text"
+                    value={input}
+                    onChange={(e) => this.handleChange(e)} />
                 {this.renderSuggestions()}
             </div>
         )
