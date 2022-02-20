@@ -20,3 +20,25 @@ export const createUserReview = async (receiverId, content) => {
         body: JSON.stringify({ content })
     }).then(res => res.json());
 }
+
+export const updateUserReview = async (reviewId, content, receiverId) => {
+    console.log(`${API_URL}/users/${receiverId}/reviews/${reviewId}`);
+    return fetch(`${API_URL}/users/${receiverId}/reviews/${reviewId}`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ content })
+    }).then(res => res.json());
+}
+
+export const deleteUserReview = async (reviewId, receiverId) => {
+    return fetch(`${API_URL}/users/${receiverId}/reviews/${reviewId}`, {
+        method: 'DELETE',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    }).then(res => res.json());
+}

@@ -4,6 +4,7 @@ import dateFormat from "dateformat";
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import { getUserProfile, getUserReviews } from "../services/users";
 import WriteReviewModal from "./WriteReviewModel";
+import ReviewItem from "./ReviewItem";
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -20,7 +21,7 @@ class ProfilePage extends React.Component {
         const { id } = this.props.match.params
         const user = await getUserProfile(id);
         const reviews = await getUserReviews(id);
-
+        console.log(reviews);
         this.setState({
             user,
             reviews,
@@ -54,21 +55,22 @@ class ProfilePage extends React.Component {
 
         const date = new Date(createdAt)
         const joined = dateFormat(date, 'mmmm, yyyy');
-
+        
         const reviewList = reviews.rows.map(review => {
-            let reviewDate = new Date(review.createdAt)
-            reviewDate = dateFormat(reviewDate, 'mmmm, yyyy');
             return (
-                <div className="review" key={review.id}>
-                    <p>{review.content}</p>
-                    <div className="review-user">
-                        <img src={review.reviewer.profilePicture ? review.reviewer.profilePicture : profilePlaceholder} alt={review.reviewer.name + ' profile picture'} />
-                        <div>
-                            <p>{review.reviewer.name}, {review.reviewer.location}</p>
-                            <p>{reviewDate}</p>
-                        </div>
-                    </div>
-                </div>
+                <ReviewItem
+                    key={review.id}
+                    content={review.content}
+                    reviewDate={review.createdAt}
+                    user={review.reviewer.name}
+                    imgUrl={review.reviewer.profilePicture && review.reviewer.profilePicture}
+                    location={review.reviewer.location}
+                    reviewId={review.id}
+                    receiverId={review.receiverId}
+                    receiverName={name}
+                    refresh={this.populateUserData.bind(this)}
+                    // isAuthor={review.reviewer.id === loggedin.id} to be implemented
+                />
             )
         });
 
@@ -80,7 +82,15 @@ class ProfilePage extends React.Component {
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
                         <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}><small>{reviews.count} Reviews</small></p>
-                        <WriteReviewModal receiverId={id} name={name} refresh={this.populateUserData.bind(this)}/>
+                        
+                        <WriteReviewModal
+                            receiverId={id}
+                            name={name}
+                            btnVariant="outline-primary"
+                            btnText={`Write a review to ${firstName}`}
+                            refresh={this.populateUserData.bind(this)}
+                        />
+
                     </div>
                 </div>
                 <hr />

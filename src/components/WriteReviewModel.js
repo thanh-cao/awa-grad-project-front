@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
-import { createUserReview } from '../services/users';
+import { createUserReview, updateUserReview } from '../services/users';
 
 export default class WriteReviewModal extends Component {
     constructor(props) {
         super(props)
         this.state = {
             show: false,
-            review: '',
+            review: this.props.review || '',
             error: ''
         }
 
@@ -31,6 +31,14 @@ export default class WriteReviewModal extends Component {
         })
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.review !== this.props.review) {
+            this.setState({
+                review: this.props.review
+            })
+        }
+    }
+
     async handleSubmit(event) {
         event.preventDefault();
         if (this.state.review === '') {
@@ -39,7 +47,11 @@ export default class WriteReviewModal extends Component {
         }
 
         try {
-            await createUserReview(this.props.receiverId, this.state.review);
+            if (this.props.actionType === 'edit') {
+                await updateUserReview(this.props.reviewId, this.state.review, this.props.receiverId);
+            } else {
+                await createUserReview(this.props.receiverId, this.state.review);
+            }
             this.setState({
                 show: false,
                 error: '',
@@ -55,8 +67,8 @@ export default class WriteReviewModal extends Component {
     render() {
         return (
             <>
-                <Button variant="primary" onClick={this.handleShow}>
-                    Write a review to {this.props.name}
+                <Button variant={this.props.btnVariant} size={this.props.btnSize} onClick={this.handleShow}>
+                    {this.props.btnText}
                 </Button>
 
                 <Modal show={this.state.show} onHide={this.handleClose}>
