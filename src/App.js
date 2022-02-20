@@ -20,6 +20,10 @@ import "./components/landingpagephoto.css";
 import "./components/map.css";
 
 const { authenticateUser } = require('./components/loginUser');
+import './App.css';
+import './components/Login.css'
+import './components/landingpagephoto.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
   constructor(props) {
