@@ -1,8 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
+import { Container, Row, Col, Button } from 'react-bootstrap';
+
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import { getUserProfile, getUserReviews } from "../services/users";
+
 import WriteReviewModal from "./WriteReviewModel";
 import ReviewItem from "./ReviewItem";
 
@@ -55,7 +58,7 @@ class ProfilePage extends React.Component {
 
         const date = new Date(createdAt)
         const joined = dateFormat(date, 'mmmm, yyyy');
-        
+
         const reviewList = reviews.rows.map(review => {
             return (
                 <ReviewItem
@@ -69,7 +72,7 @@ class ProfilePage extends React.Component {
                     receiverId={review.receiverId}
                     receiverName={name}
                     refresh={this.populateUserData.bind(this)}
-                    // isAuthor={review.reviewer.id === loggedin.id} to be implemented
+                // isAuthor={review.reviewer.id === loggedin.id} to be implemented
                 />
             )
         });
@@ -82,7 +85,7 @@ class ProfilePage extends React.Component {
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
                         <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}><small>{reviews.count} Reviews</small></p>
-                        
+
                         <WriteReviewModal
                             receiverId={id}
                             name={name}
@@ -103,7 +106,9 @@ class ProfilePage extends React.Component {
                         <p>From Oslo, Norway</p>
                         <p>Speaks {languages}</p>
                     </div>
-                    <Link to={`/users/${id}/edit`} className="edit-profile-btn">Edit</Link>
+                    <Link to={`/users/${id}/edit`}>
+                        <Button variant="outline-primary" className="edit-profile-btn">Edit</Button>
+                    </Link>
                 </div>
                 <hr />
                 <div id="userReviews" className="user-reviews">

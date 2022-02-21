@@ -40,10 +40,6 @@
   position: absolute;
   top: 8px;
   right: 10px;
-  border: 1px solid #646464;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
 }
 .profile-page .user-reviews {
   text-align: left;

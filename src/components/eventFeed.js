@@ -6,7 +6,7 @@ import chicago from "../photos/chicagoMusical.PNG";
 import SimpleMap from "./maps"
 
 import { getEvents } from "../services/ticketmaster";
-import SimpleMap from "./map";
+// import SimpleMap from "./map";
 
 class eventFeed extends React.Component {
   constructor(props) {
