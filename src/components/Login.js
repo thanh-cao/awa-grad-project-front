@@ -1,7 +1,7 @@
 import React from 'react';
 import {Button, Form} from 'react-bootstrap';
 
-const { loginUser, authenticateUser } = require('./loginUser');
+const { loginUser } = require('./loginUser');
 
 class Login extends React.Component {
   constructor(props) {
