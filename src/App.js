@@ -48,6 +48,12 @@ class App extends Component {
     return (
       <HashRouter>
       <Switch>
+
+        <Route path="/login" component={Login} />
+        <Route path="/peoplefeed" component={peopleFeed} />
+        <Route path="/eventfeed/" component={eventFeed} />
+        <Route path="/map" component={SimpleMap} />
+
         <Route path="/users/login" component={Login} />
         <Route path="/users/peoplefeed" component={peopleFeed} />
         <Route path="/users/eventfeed" component={eventFeed} />

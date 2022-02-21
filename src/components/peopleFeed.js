@@ -3,7 +3,7 @@ import React from "react";
 import femalePhoto from "../photos/sampleprofilephotofemale.png";
 import malePhoto from "../photos/sampleprofilephotomale.PNG";
 
-import { getPeople } from '../services/people';
+import { getPeople } from "../services/people";
 
 class peopleFeed extends React.Component {
   constructor(props) {
@@ -13,58 +13,51 @@ class peopleFeed extends React.Component {
       people: [],
       isLoading: false,
       error: null,
+    };
+  }
+
+  async componentDidMount() {
+    await this.populatePeople();
+  }
+
+  async populatePeople() {
+    console.log(process.env.TICKETMASTER_API_KEY);
+    try {
+      this.setState({ isLoading: true });
+      const people = await getPeople();
+      console.log(people);
+      this.setState({ people: people, isLoading: false });
+    } catch (error) {
+      this.setState({ error });
     }
   }
-
-async componentDidMount() {
-  await this.populatePeople()
-}
-
-async populatePeople() {
-  
-console.log(process.env.TICKETMASTER_API_KEY)
-  try {
-    this.setState({ isLoading: true});
-    const people = await getPeople();
-    console.log(people);
-    this.setState({ people: people, isLoading: false});
-  } catch (error) {
-    this.setState({ error });
-  }
-}
 
   render() {
     const { name } = this.props.match.params;
 
-    const {
-      people, 
-      isLoading,
-      error,
-    } = this.state; 
+    const { people, isLoading, error } = this.state;
 
     if (error) {
-      return (
-        <div>Unable to fetch users: {error.message}</div>
-      );
+      return <div>Unable to fetch users: {error.message}</div>;
     }
 
     if (isLoading) {
-      return (
-        <div>Loading users...</div>
-      );
+      return <div>Loading users...</div>;
     }
 
     console.log(people);
-    const peopleCard = people
-    .map(({ id, name, email }
-    ) => {
+    const peopleCard = people.map(({ profilePicture, id, name, email }) => {
       // const styles = {
       //   border: '1px solid black',
       // };
 
       return (
         <div key={id}>
-          <p>{name}</p>
+          <p>
+            {name}
+
+            {email}
+          </p>
         </div>
       );
     });

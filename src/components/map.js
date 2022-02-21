@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
-
 const AnyReactComponent = ({ text }) => <div className="marker">{text}</div>;
 
 class SimpleMap extends Component {
