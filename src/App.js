@@ -14,7 +14,7 @@ import SignUp from "./components/SignUp";
 
 import LandingPage from "./components/LandingPage";
 
-import Search from "./components/searchPage";
+import Search from "./components/SearchPage";
 
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
