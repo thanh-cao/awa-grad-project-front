@@ -5,6 +5,7 @@ import './components/Login.css'
 import './components/landingpagephoto.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
+import Header from './components/Header'
 import Login from "./components/Login";
 import PeopleFeed from "./components/PeopleFeed";
 import EventFeed from "./components/EventFeed";
@@ -36,14 +37,12 @@ class App extends Component {
 
   async componentDidMount() {
 
-    console.log('app mount')
     await fetch(`${process.env.REACT_APP_API_URL}/users/authenticate`, {credentials: 'include'})
       .then(res => res.json())
       .then(user => {
         if (user.error) {
           throw new Error(user.error);
         }
-
           this.setState({user, isAuthenticated: true})
       })
       .catch(err => err);
@@ -51,6 +50,14 @@ class App extends Component {
 
   setAuth(auth){
     this.setState({isAuthenticated: auth})
+  }
+
+  handleLogout(){
+    fetch(`${process.env.REACT_APP_API_URL}/users/logout`, {credentials: 'include'})
+    .then(res => res.json())
+    .then(data => {
+      this.setState({isAuthenticated: false, user: null})
+    })
   }
   
   render () {
@@ -60,8 +67,8 @@ class App extends Component {
 
     return (
       <HashRouter>
+      <Header isAuthenticated={isAuthenticated} handleLogout={() => this.handleLogout()}/>
       <Switch>
-        
         <Route exact path="/" component={LandingPage} />
         <Route path="/signup" component={SignUp} />
         <Route
