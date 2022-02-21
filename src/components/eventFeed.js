@@ -1,8 +1,5 @@
 import React from "react";
-
-import holmenkollen from "../photos/holmenkollen.PNG";
-import osloSpektrum from "../photos/osloSpektrum.PNG";
-import chicago from "../photos/chicagoMusical.PNG";
+import { Link } from "react-router-dom";
 
 import { getEvents } from "../services/ticketmaster";
 import SimpleMap from "./map";
@@ -12,49 +9,119 @@ class EventFeed extends React.Component {
     super(props);
 
     this.state = {
+      textInput: "",
       events: [],
       isLoading: false,
       error: null,
+      city: "",
+      adress: {}
     };
+
+    this.textInput = React.createRef();
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+
+
+  handleChange(event) {
+    this.setState({
+      textInput: event.target.value,
+    });
+  }
+
+  async handleSubmit(event, searchInput) {
+    event.preventDefault();
+    const events = await getEvents(this.state.textInput)
+    console.log(events)
+    this.props.history.replace("/eventfeed/" + this.state.textInput)
+    const searchedEvent = this.getEventsPlease(events)
+    this.setState({
+      events: searchedEvent,
+      textInput: searchInput,
+    })
+    console.log(this.state.textInput)
+  }
+
+  getEventsPlease(events) {
+    const eventLocation = [];
+    const adress = fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.city},+EU&key=AIzaSyAGIPSSAJGsWmI8LPCFg5gqo4TZDRthXf8`)
+              .then(response => response.json())
+              .then(data => {
+                this.setState({
+                  ...this.state,
+                  adress: data.results[0].geometry.location
+                })
+                return data.results[0].geometry.location;
+              });
+    console.log(adress)
+
+    events["_embedded"].events.forEach((event) => {
+      const location = event["_embedded"].venues[0].location;
+      const venueName = event["_embedded"].venues[0].name;
+      const dates = event.dates.start;
+      const url = event.url;
+      
+
+      if (!eventLocation.find((el) => el.name === event.name)) {
+        eventLocation.push({
+          lat: location.latitude,
+          lng: location.longitude,
+          id: event.id,
+          name: event.name,
+          image: event.images[0],
+          venue: venueName,
+          date: dates["localDate"],
+          time: dates["localTime"],
+          url: url,
+        });
+      }
+    });
+    return eventLocation;
   }
 
   async componentDidMount() {
+    console.log('didmount')
     try {
       this.setState({ isLoading: true });
-      const events = await getEvents("Oslo");
-      console.log(events);
-      function getEventsPlease(events) {
-        const eventLocation = [];
-        events["_embedded"].events.forEach((event) => {
-          const location = event["_embedded"].venues[0].location;
-          const venueName = event["_embedded"].venues[0].name;
-          const dates = event.dates.start;
-          const url = event.url;
-          if (!eventLocation.find((el) => el.name === event.name)) {
-            eventLocation.push({
-              lat: location.latitude,
-              lng: location.longitude,
-              id: event.id,
-              name: event.name,
-              image: event.images[0],
-              venue: venueName,
-              date: dates["localDate"],
-              time: dates["localTime"],
-              url: url,
-            });
-          }
-        });
-        return eventLocation;
+      const city = this.props.history.location?.pathname.split("/")[2];
+      console.log(this.props.history.location?.pathname.split("/"))
+      if (city) {
+        await this.setState({
+          ...this.state,
+          city
+        })
+      } else {
+        await this.setState({
+          ...this.state,
+          city: "Oslo"
+        })
       }
 
-      this.setState({ events: getEventsPlease(events), isLoading: false });
+      const events = await getEvents(this.state.city);
+      
+
+      this.setState({ events: this.getEventsPlease(events), isLoading: false });
     } catch (error) {
       this.setState({ error });
     }
   }
 
+  componentDidUpdate() {
+    const city = this.props.history.location?.pathname.split("/")[2];
+
+    if(city && city !== this.state.city) {
+      this.setState({
+        ...this.state,
+        city
+      })
+    }
+  }
+
   render() {
     const { events, isLoading, error } = this.state;
+    console.log('render', this.props.history.location)
 
     if (error) {
       return (
@@ -94,20 +161,38 @@ class EventFeed extends React.Component {
 
     return (
       <div className="people-feed">
+        <div>
+          <div className="search-header"></div>
+          <h1>Find Your destination</h1>
+          <label>
+            Destination
+            <input
+              name="location"
+              onChange={this.handleChange}
+              type="text"
+              placeholder="Search"
+              id="searchButton"
+            />
+          </label>
+          <button onClick={this.handleSubmit}>Search</button>
+          <br></br>
+        </div>
+
         <div className="header"></div>
         <SimpleMap>
 
         </SimpleMap>
+
         <h1 className="header-peoplefeed">
           Destination
           <br></br>
-          <span className="searchedDest">:Oslo</span>
+          <span className="searchedDest">:{this.state.city}</span>
         </h1>
         <div className="menu-items">
-          <h5>People</h5>
+          <h5><Link to="/peopleFeed">People</Link></h5>
           <h5 style={{ textDecoration: "underline" }}>Events</h5>
         </div>
-        <SimpleMap events={this.state.events}></SimpleMap>
+        <SimpleMap events={this.state.events} adress={this.state.adress}></SimpleMap>
         {eventElements.length ? (
           <ul className="events">{eventElements}</ul>
         ) : (
