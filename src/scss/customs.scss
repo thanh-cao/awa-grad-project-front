@@ -1,0 +1,143 @@
+// Override default variables before the import
+$primary: #22c1c3;
+
+// $theme-colors: (
+//   "primary": #22c1c3,
+// );
+
+// Import Bootstrap and its default variables
+@import "~bootstrap/scss/bootstrap.scss";
+
+// custom style for landing page
+
+$linear-gradient: linear-gradient(90deg, #fdbb2d 0%, #22c1c3 100%);
+
+#root {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.navbar-light {
+  .navbar-brand {
+    /* background: -webkit-linear-gradient(
+      90deg,
+      rgba(110, 255, 250, 1) 0%,
+      rgba(217, 120, 255, 1) 100%
+    ); */
+    background: $linear-gradient;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    font-weight: bold;
+  }
+}
+
+h1 {
+  &.hero-text {
+    /* background: -webkit-linear-gradient(
+      90deg,
+      rgba(110, 255, 250, 1) 0%,
+      rgba(217, 120, 255, 1) 100%
+    ); */
+    background: $linear-gradient;
+
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.footer-wrapper {
+  /* background: linear-gradient(
+      90deg,
+      rgba(110, 255, 250, 1) 0%,
+      rgba(217, 120, 255, 1) 100%
+    ); */
+  background: $linear-gradient;
+  z-index: 1;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.15);
+    z-index: -1;
+  }
+}
+
+.landing-page {
+  background: url("../photos/landingpagephoto.jpg") center center / cover
+    no-repeat;
+  /* background: url('https://images.unsplash.com/photo-1524850011238-e3d235c7d4c9') center center / cover no-repeat; */
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-image: radial-gradient(
+      at center center,
+      #858585 0%,
+      #181818 100%
+    );
+    opacity: 0.6;
+    z-index: -1;
+  }
+}
+
+.card,
+.card-body,
+.card-bg-gradient {
+  border-radius: 0.5rem;
+}
+
+.card-bg-gradient {
+  position: absolute;
+  top: -0.35rem;
+  left: -0.35rem;
+  bottom: -0.35rem;
+  right: -0.35rem;
+  background: $linear-gradient;
+  /* background: linear-gradient(90deg, #FC466B 0%, #3F5EFB 100%); */
+  /* background: linear-gradient(90deg, #18305C 0%, #BD81BF 100%); */
+  opacity: 0.25;
+  transition-property: color, background, border-color, opacity, box-shadow,
+    filter, backdrop-filter, -webkit-text-decoration-color,
+    -webkit-backdrop-filter;
+  transition-duration: 1000ms;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  filter: blur(8px);
+}
+
+.card:hover .card-bg-gradient {
+  opacity: 0.8;
+  filter: blur(10px);
+  transition-duration: 200ms;
+}
+
+.btn-primary {
+  color: white;
+}
+.btn-primary,
+.btn-outline-primary {
+  &:hover {
+    background-color: #fdbb2d;
+    border-color: #fdbb2d;
+    color: white;
+  }
+}

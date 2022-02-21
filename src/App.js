@@ -1,14 +1,9 @@
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
-import './App.css';
-import './components/Login.css'
-import './components/landingpagephoto.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Login from "./components/Login";
 import PeopleFeed from "./components/PeopleFeed";
 import EventFeed from "./components/EventFeed";
-import SimpleMap from "./components/map";
 
 import SignUp from "./components/signUp";
 import LandingPage from "./components/LandingPage";
@@ -17,12 +12,14 @@ import Search from "./components/searchPage";
 
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
+import Header from './components/Header';
+import Footer from './components/Footer';
 
 import "./App.css";
+import './scss/customs.scss';
 import "./components/Login.css";
 import "./components/landingpagephoto.css";
 import "./components/map.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 class App extends Component {
   constructor(props) {
@@ -36,100 +33,102 @@ class App extends Component {
   async componentDidMount() {
 
     console.log('app mount')
-    await fetch(`${process.env.REACT_APP_API_URL}/users/authenticate`, {credentials: 'include'})
+    await fetch(`${process.env.REACT_APP_API_URL}/users/authenticate`, { credentials: 'include' })
       .then(res => res.json())
       .then(user => {
         if (user.error) {
           throw new Error(user.error);
         }
 
-          this.setState({user, isAuthenticated: true})
+        this.setState({ user, isAuthenticated: true })
       })
       .catch(err => err);
   }
 
-  setAuth(auth){
-    this.setState({isAuthenticated: auth})
+  setAuth(auth) {
+    this.setState({ isAuthenticated: auth })
   }
-  
-  render () {
-    const {isAuthenticated, user} = this.state
+
+  render() {
+    const { isAuthenticated, user } = this.state
     console.log('Is Authenticated: ', isAuthenticated);
     console.log('User: ', user)
 
     return (
       <HashRouter>
-      <Switch>
-        
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/signup" component={SignUp} />
-        <Route
-              exact
-              path="/login"
-              render={props =>
-                !isAuthenticated ? (
-                  <Login {...props} setAuth={this.setAuth.bind(this)} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              }
-            />
-        <Route
-              exact
-              path="/people"
-              render={props =>
-                isAuthenticated ? (
-                  <PeopleFeed {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-        <Route
-              exact
-              path="/search"
-              render={props =>
-                isAuthenticated ? (
-                  <Search {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-        <Route
-              exact
-              path="/events"
-              render={props =>
-                isAuthenticated ? (
-                  <EventFeed {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-        <Route
-              exact
-              path="/user/:id/edit"
-              render={props =>
-                isAuthenticated ? (
-                  <EditProfile {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-        <Route
-              exact
-              path="/user/:id"
-              render={props =>
-                isAuthenticated ? (
-                  <ProfilePage {...props} />
-                ) : (
-                  <Redirect to="/login" />
-                )
-              }
-            />
-        {/* <Route path="/signup" component={SignUp} />
+
+        <Header />
+
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/signup" component={SignUp} />
+          <Route
+            exact
+            path="/login"
+            render={props =>
+              !isAuthenticated ? (
+                <Login {...props} setAuth={this.setAuth.bind(this)} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/people"
+            render={props =>
+              isAuthenticated ? (
+                <PeopleFeed {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/search"
+            render={props =>
+              isAuthenticated ? (
+                <Search {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/events"
+            render={props =>
+              isAuthenticated ? (
+                <EventFeed {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/user/:id/edit"
+            render={props =>
+              isAuthenticated ? (
+                <EditProfile {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/user/:id"
+            render={props =>
+              isAuthenticated ? (
+                <ProfilePage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          {/* <Route path="/signup" component={SignUp} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login">
           <Login
@@ -140,10 +139,13 @@ class App extends Component {
         <ProtectedRoutes path="/search" component={Search} />
         <ProtectedRoutes path="/users/:id/edit" component={EditProfile} />
         <ProtectedRoutes path="/users/:id" component={ProfilePage} /> */}
-        
 
-      </Switch>
-    </HashRouter>
+
+        </Switch>
+
+        <Footer />
+
+      </HashRouter>
     );
   }
 }
