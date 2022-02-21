@@ -24,7 +24,6 @@ class Login extends React.Component {
   }
 
   async handleSubmit(event) {
-    console.log('handleSubmit');
     event.preventDefault();
     const { email, password } = this.state;
     try {
@@ -34,25 +33,13 @@ class Login extends React.Component {
         throw new Error(user.error);
       }
 
-      localStorage.setItem('userAthenticated', JSON.stringify(user));
-      return this.props.history.push('/users/search');
+      await this.props.setAuth(true)
+      this.props.history.replace('/search');
 
     } catch (error) {
       console.log(error);
     }
   }
-
-  async componentDidMount() {
-   /*  try {
-      const user = await authenticateUser();
-      if (!user.error) {
-        this.props.history.push('/users/eventfeed');
-      }
-    } catch (error) {
-      console.log(error);
-    } */
-  }
-
   
 
   render() {
@@ -69,7 +56,7 @@ class Login extends React.Component {
                 <input name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
                 </label>
                 <br></br>
-                <button onClick={this.handleSubmit} class="logInButton" >Log in here</button>
+                <button onClick={this.handleSubmit} className="logInButton" >Log in here</button>
             </div> 
             <div className='footer'></div>
       </div>

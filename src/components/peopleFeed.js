@@ -5,7 +5,7 @@ import malePhoto from "../photos/sampleprofilephotomale.PNG";
 
 import { getPeople } from '../services/people';
 
-class peopleFeed extends React.Component {
+class PeopleFeed extends React.Component {
   constructor(props) {
     super(props);
 
@@ -139,4 +139,4 @@ console.log(process.env.TICKETMASTER_API_KEY)
   }
 }
 
-export default peopleFeed;
+export default PeopleFeed;
