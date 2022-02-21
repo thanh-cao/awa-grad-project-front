@@ -7,7 +7,7 @@ import parryHotter from "../photos/ParryHotter.jpg";
 
 import { getPeople } from "../services/people";
 
-class peopleFeed extends React.Component {
+class PeopleFeed extends React.Component {
   constructor(props) {
     super(props);
 
@@ -126,4 +126,4 @@ class peopleFeed extends React.Component {
   }
 }
 
-export default peopleFeed;
+export default PeopleFeed;

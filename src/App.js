@@ -1,9 +1,13 @@
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
+import './App.css';
+import './components/Login.css'
+import './components/landingpagephoto.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Login from "./components/Login";
-import peopleFeed from "./components/peopleFeed";
-import eventFeed from "./components/eventFeed";
+import PeopleFeed from "./components/PeopleFeed";
+import EventFeed from "./components/EventFeed";
 import SimpleMap from "./components/map";
 
 import SignUp from "./components/signUp";
@@ -20,8 +24,6 @@ import "./components/landingpagephoto.css";
 import "./components/map.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-const { authenticateUser } = require('./components/loginUser');
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,42 +34,112 @@ class App extends Component {
   }
 
   async componentDidMount() {
-    try {
-      const user = await authenticateUser();
-      if (!user.error) {
-        this.setState({
-          user: user,
-          isAuthenticated: true
-        });
-      }
-    } catch (error) {
-      console.log(error);
-    }
+
+    console.log('app mount')
+    await fetch(`${process.env.REACT_APP_API_URL}/users/authenticate`, {credentials: 'include'})
+      .then(res => res.json())
+      .then(user => {
+        if (user.error) {
+          throw new Error(user.error);
+        }
+
+          this.setState({user, isAuthenticated: true})
+      })
+      .catch(err => err);
   }
+
+  setAuth(auth){
+    this.setState({isAuthenticated: auth})
+  }
+  
   render () {
+    const {isAuthenticated, user} = this.state
+    console.log('Is Authenticated: ', isAuthenticated);
+    console.log('User: ', user)
+
     return (
       <HashRouter>
       <Switch>
-
-        <Route path="/login" component={Login} />
-        <Route path="/peoplefeed" component={peopleFeed} />
-        <Route path="/eventfeed/" component={eventFeed} />
-        <Route path="/map" component={SimpleMap} />
-
-        <Route path="/users/login" component={Login} />
-        <Route path="/users/peoplefeed" component={peopleFeed} />
-        <Route path="/users/eventfeed" component={eventFeed} />
-
+        
+        <Route exact path="/" component={LandingPage} />
         <Route path="/signup" component={SignUp} />
-        <Route path="/landingpage" component={LandingPage} />
-  
-        <Route path="/users/search" component={Search} />
-
-        <Route path="/signup" component={SignUp} />
-        <Route path="/landingpage" component={LandingPage} />
-
-        <Route path="/users/:id/edit" component={EditProfile} />
-        <Route path="/users/:id" component={ProfilePage} />
+        <Route
+              exact
+              path="/login"
+              render={props =>
+                !isAuthenticated ? (
+                  <Login {...props} setAuth={this.setAuth.bind(this)} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+        <Route
+              exact
+              path="/people"
+              render={props =>
+                isAuthenticated ? (
+                  <PeopleFeed {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+        <Route
+              exact
+              path="/search"
+              render={props =>
+                isAuthenticated ? (
+                  <Search {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+        <Route
+              exact
+              path="/events"
+              render={props =>
+                isAuthenticated ? (
+                  <EventFeed {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+        <Route
+              exact
+              path="/user/:id/edit"
+              render={props =>
+                isAuthenticated ? (
+                  <EditProfile {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+        <Route
+              exact
+              path="/user/:id"
+              render={props =>
+                isAuthenticated ? (
+                  <ProfilePage {...props} />
+                ) : (
+                  <Redirect to="/login" />
+                )
+              }
+            />
+        {/* <Route path="/signup" component={SignUp} />
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/login">
+          <Login
+          handleAuthentication={this.handleAthentication.bind(this)}/>
+        </Route>
+        <ProtectedRoutes path="/people" component={peopleFeed} /> 
+        <ProtectedRoutes path="/events" component={EventFeed} />
+        <ProtectedRoutes path="/search" component={Search} />
+        <ProtectedRoutes path="/users/:id/edit" component={EditProfile} />
+        <ProtectedRoutes path="/users/:id" component={ProfilePage} /> */}
         
 
       </Switch>

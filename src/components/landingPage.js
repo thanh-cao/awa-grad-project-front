@@ -13,7 +13,7 @@ class LandingPage extends React.Component {
             <h5>Tired of the established tourist traps 
 and ready for authentic 
 travel experience with a local?</h5>
-            <div className='landingButtons'><Link className='logIn' to='users/login'>Login</Link> <Link className='logIn' to='/signup'>Sign up</Link></div>
+            <div className='landingButtons'><Link className='logIn' to='login'>Login</Link> <Link className='logIn' to='/signup'>Sign up</Link></div>
             <div className='footer'></div>
       </div>
     );
