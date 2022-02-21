@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form, Button } from 'react-bootstrap';
 
 
 class SignUp extends React.Component {
@@ -36,38 +37,31 @@ class SignUp extends React.Component {
 
   render() {
     return (
-        <div className='main'>
-            <div className='header'></div>        
+        <div className='w-50 m-auto my-5'>    
             <h1 className='logInH1'>Sign up</h1>
-            <div className='inputFields'>
-              <label>
-              <input 
+            <Form>
+              <Form.Control 
                 type="text" 
                 placeholder='name' 
                 id='name'
                 onChange={(e) => this.handleChange(e, 'name')}/>
-              </label>
-              <label>
-              <input 
+              <br />
+              <Form.Control 
                 type="email" 
                 placeholder='E-mail' 
                 id='email'
                 onChange={(e) => this.handleChange(e, 'email')}/>
-              </label>
-              <br></br> 
-              <label>
-              <input 
+              <br />
+              <Form.Control 
                 type="password" 
                 placeholder='Password' 
                 id='pass'
                 onChange={(e) => this.handleChange(e, 'password')}/>
-              </label>
               <br></br>
-              <button 
+              <Button
               className="logInButton"
-              onClick={() => this.handleSignup()}>Sign up</button>
-            </div> 
-            <div className='footer'></div>
+              onClick={() => this.handleSignup()}>Sign up</Button>
+            </Form> 
       </div>
     );
   }

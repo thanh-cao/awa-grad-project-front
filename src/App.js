@@ -1,9 +1,5 @@
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
-import './App.css';
-import './components/Login.css'
-import './components/landingpagephoto.css'
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Header from './components/Header'
 import Login from "./components/Login";
@@ -21,8 +17,6 @@ import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
 
 import "./App.css";
-import "./components/Login.css";
-import "./components/landingpagephoto.css";
 import "./components/map.css";
 import 'bootstrap/dist/css/bootstrap.min.css';
 
