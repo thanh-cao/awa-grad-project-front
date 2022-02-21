@@ -12,42 +12,65 @@ class eventFeed extends React.Component {
     super(props);
 
     this.state = {
+      textInput: "",
       events: [],
       isLoading: false,
       error: null,
     };
+
+    this.textInput = React.createRef();
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({
+      textInput: event.target.value,
+    });
+  }
+
+  async handleSubmit(event, searchInput) {
+    event.preventDefault();
+    const events = await getEvents(this.state.textInput)
+    const searchedEvent = this.getEventsPlease(events)
+    this.setState({
+      events: searchedEvent,
+      textInput: searchInput,
+    })
+  }
+
+  getEventsPlease(events) {
+    const eventLocation = [];
+    events["_embedded"].events.forEach((event) => {
+      const location = event["_embedded"].venues[0].location;
+      const venueName = event["_embedded"].venues[0].name;
+      const dates = event.dates.start;
+      const url = event.url;
+      if (!eventLocation.find((el) => el.name === event.name)) {
+        eventLocation.push({
+          lat: location.latitude,
+          lng: location.longitude,
+          id: event.id,
+          name: event.name,
+          image: event.images[0],
+          venue: venueName,
+          date: dates["localDate"],
+          time: dates["localTime"],
+          url: url,
+        });
+      }
+    });
+    return eventLocation;
   }
 
   async componentDidMount() {
     try {
       this.setState({ isLoading: true });
-      const events = await getEvents("Oslo");
-      console.log(events);
-      function getEventsPlease(events) {
-        const eventLocation = [];
-        events["_embedded"].events.forEach((event) => {
-          const location = event["_embedded"].venues[0].location;
-          const venueName = event["_embedded"].venues[0].name;
-          const dates = event.dates.start;
-          const url = event.url;
-          if (!eventLocation.find((el) => el.name === event.name)) {
-            eventLocation.push({
-              lat: location.latitude,
-              lng: location.longitude,
-              id: event.id,
-              name: event.name,
-              image: event.images[0],
-              venue: venueName,
-              date: dates["localDate"],
-              time: dates["localTime"],
-              url: url,
-            });
-          }
-        });
-        return eventLocation;
-      }
+      const events = await getEvents('Oslo');
+      
 
-      this.setState({ events: getEventsPlease(events), isLoading: false });
+      this.setState({ events: this.getEventsPlease(events), isLoading: false });
     } catch (error) {
       this.setState({ error });
     }
@@ -93,7 +116,22 @@ class eventFeed extends React.Component {
 
     return (
       <div className="people-feed">
-        <div className="header"></div>
+        <div>
+          <div className="header"></div>
+          <h1>Find Your destination</h1>
+          <label>
+            Destination
+            <input
+              name="location"
+              onChange={this.handleChange}
+              type="text"
+              placeholder="Search"
+              id="searchButton"
+            />
+          </label>
+          <button onClick={this.handleSubmit}>Search</button>
+          <br></br>
+        </div>
         <h1 className="header-peoplefeed">
           Destination
           <br></br>

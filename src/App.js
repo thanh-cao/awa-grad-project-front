@@ -25,7 +25,7 @@ function App() {
       <Switch>
         <Route path="/login" component={Login} />
         <Route path="/peoplefeed" component={peopleFeed} />
-        <Route path="/eventfeed" component={eventFeed} />
+        <Route path="/eventfeed/" component={eventFeed} />
         <Route path="/map" component={SimpleMap} />
 
         <Route path="/signup" component={SignUp} />
