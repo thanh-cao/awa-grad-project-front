@@ -1,7 +1,9 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 import femalePhoto from "../photos/sampleprofilephotofemale.png";
 import malePhoto from "../photos/sampleprofilephotomale.PNG";
+import parryHotter from "../photos/ParryHotter.jpg";
 
 import { getPeople } from "../services/people";
 
@@ -33,7 +35,14 @@ class peopleFeed extends React.Component {
   }
 
   render() {
-    const { name } = this.props.match.params;
+    const {
+      name,
+      countrycode,
+      location,
+      profilePicture,
+      interests,
+      languages,
+    } = this.props.match.params;
 
     const { people, isLoading, error } = this.state;
 
@@ -46,21 +55,38 @@ class peopleFeed extends React.Component {
     }
 
     console.log(people);
-    const peopleCard = people.map(({ profilePicture, id, name, email }) => {
-      // const styles = {
-      //   border: '1px solid black',
-      // };
+    const peopleCard = people.map(
+      ({
+        profilePicture,
+        id,
+        name,
+        email,
+        countrycode,
+        location,
+        interests,
+        languages,
+      }) => {
+        // const styles = {
+        //   border: '1px solid black',
+        // };
 
-      return (
-        <div key={id}>
-          <p>
-            {name}
-
-            {email}
-          </p>
-        </div>
-      );
-    });
+        return (
+          <div key={id} className="profile-card">
+            <br></br>
+            <h4>{name}</h4>
+            <p>
+              Location: {location}
+              Interests: {interests}
+              Languages: {languages}
+            </p>
+            <button>
+              {" "}
+              <Link to={`/users/${id}`}>View profile</Link>
+            </button>
+          </div>
+        );
+      }
+    );
 
     // return (
     //   <div style={{ width: 500, margin: '0 auto'}}>
@@ -75,57 +101,25 @@ class peopleFeed extends React.Component {
         <h1 className="header-peoplefeed">
           Destination
           <br></br>
-          <span className="searchedDest">:Oslo</span>
+          <span className="searchedDest">{this.state.city}</span>
         </h1>
         <div className="menu-items">
           <h5 style={{ textDecoration: "underline" }}>People</h5>
-          <h5>Events</h5>
+          <h5>
+            <Link to="/eventFeed">Events</Link>
+          </h5>
         </div>
         <div className="profile-card">
-          <img src={femalePhoto} alt="femalesample" />
+          <img src={parryHotter} alt="femalesample" />
           <div className="inner-profile-card">
             <h3 className="name-title">{name}</h3>
             <div>{peopleCard}</div>
             <p className="profile-info">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu
-              rutrum (...).{" "}
+              {countrycode} {location} {interests} {languages}
             </p>
-            <button>View profile</button>
           </div>
         </div>
-        <div className="profile-card">
-          <img src={malePhoto} alt="malesample" />
-          <div className="inner-profile-card">
-            <h3 className="name-title">Suleman</h3>
-            <p className="profile-info">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu
-              rutrum (...).{" "}
-            </p>
-            <button>View profile</button>
-          </div>
-        </div>
-        <div className="profile-card">
-          <img src={malePhoto} alt="malesample" />
-          <div className="inner-profile-card">
-            <h3 className="name-title">Frederik</h3>
-            <p className="profile-info">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu
-              rutrum (...).{" "}
-            </p>
-            <button>View profile</button>
-          </div>
-        </div>
-        <div className="profile-card">
-          <img src={femalePhoto} alt="femalesample" />
-          <div className="inner-profile-card">
-            <h3 className="name-title">Daniela</h3>
-            <p className="profile-info">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut eu
-              rutrum (...).{" "}
-            </p>
-            <button>View profile</button>
-          </div>
-        </div>
+
         <div className="footer"></div>
       </div>
     );

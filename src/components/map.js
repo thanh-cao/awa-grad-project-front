@@ -10,15 +10,18 @@ class SimpleMap extends Component {
       eventLocations: [],
     };
   }
-  static defaultProps = {
-    center: {
-      lat: 59.9126,
-      lng: 10.7548,
-    },
-    zoom: 13,
-  };
+
+  // static defaultProps = {
+  //   center: {
+  //     lat: parseFloat(this.props.adress.lat),
+  //     lng: parseFloat(this.props.adress.lng),
+  //   },
+  //   zoom: 13,
+  // };
 
   render() {
+    console.log(typeof "map lng", this.props.adress.lng);
+    console.log("map lat", this.props.adress.lat);
     const anyReactComponents = this.props.events.map((el) => {
       return (
         <AnyReactComponent key={el.id} lat={el.lat} lng={el.lng} text={el.name}>
@@ -31,8 +34,8 @@ class SimpleMap extends Component {
       <div style={{ height: "25vh", width: "100%" }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyAGIPSSAJGsWmI8LPCFg5gqo4TZDRthXf8" }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          center={this.props.adress}
+          zoom={13}
         >
           {anyReactComponents}
         </GoogleMapReact>
