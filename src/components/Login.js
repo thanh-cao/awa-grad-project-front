@@ -1,4 +1,5 @@
 import React from 'react';
+import {Button, Form} from 'react-bootstrap';
 
 const { loginUser, authenticateUser } = require('./loginUser');
 
@@ -44,21 +45,15 @@ class Login extends React.Component {
 
   render() {
     return (
-        <div className='main'>
-            <div className='header'></div>        
+        <div className='w-50 m-auto my-5'>       
             <h1 className='logInH1'>Login</h1>
-            <div className='inputFields'>
-                <label>
-                <input name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name'/>
-                </label>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Control name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name'/>
                 <br></br> 
-                <label>
-                <input name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
-                </label>
+                <Form.Control name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
                 <br></br>
-                <button onClick={this.handleSubmit} className="logInButton" >Log in here</button>
-            </div> 
-            <div className='footer'></div>
+                <Button type="submit" variant="outline-primary">Log in here</Button>
+            </Form> 
       </div>
     );
   }
