@@ -36,7 +36,7 @@ export const createUserReview = async (receiverId, content) => {
 export const updateUserReview = async (reviewId, content, receiverId) => {
     console.log(`${API_URL}/users/${receiverId}/reviews/${reviewId}`);
     return fetch(`${API_URL}/users/${receiverId}/reviews/${reviewId}`, {
-        method: 'POST',
+        method: 'PUT',
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
@@ -55,7 +55,7 @@ export const deleteUserReview = async (reviewId, receiverId) => {
     }).then(res => res.json());
 }
 
-export const uploadImage = (formData) => {
+export const uploadImage = async (formData) => {
     return fetch(`${process.env.REACT_APP_API_URL}/services/imageupload`, {
         method: 'POST',
         credentials: 'include',
