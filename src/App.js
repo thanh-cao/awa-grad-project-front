@@ -10,7 +10,8 @@ import PeopleFeed from "./components/PeopleFeed";
 import EventFeed from "./components/EventFeed";
 import SimpleMap from "./components/map";
 
-import SignUp from "./components/signUp";
+import SignUp from "./components/SignUp";
+
 import LandingPage from "./components/LandingPage";
 
 import Search from "./components/searchPage";
