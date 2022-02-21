@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 class Search extends React.Component {
   constructor(props) {
@@ -6,16 +6,14 @@ class Search extends React.Component {
     this.state = {
       textInput: "",
     };
-
     this.textInput = React.createRef();
-
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleChange(event) {
     this.setState({
-      textInput: event.target.value,
+      textInput: event.target.value
     });
   }
 

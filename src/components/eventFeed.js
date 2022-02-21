@@ -176,6 +176,12 @@ class eventFeed extends React.Component {
           <button onClick={this.handleSubmit}>Search</button>
           <br></br>
         </div>
+
+        <div className="header"></div>
+        <SimpleMap>
+
+        </SimpleMap>
+
         <h1 className="header-peoplefeed">
           Destination
           <br></br>

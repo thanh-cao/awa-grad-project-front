@@ -1,5 +1,5 @@
-import { HashRouter, Switch, Route } from "react-router-dom";
-import React from "react";
+import { HashRouter, Switch, Route } from 'react-router-dom';
+import React, { Component } from 'react';
 
 import Login from "./components/Login";
 import peopleFeed from "./components/peopleFeed";
@@ -18,26 +18,62 @@ import "./App.css";
 import "./components/Login.css";
 import "./components/landingpagephoto.css";
 import "./components/map.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-function App() {
-  return (
-    <HashRouter>
+const { authenticateUser } = require('./components/loginUser');
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: null,
+      isAuthenticated: false
+    };
+  }
+
+  async componentDidMount() {
+    try {
+      const user = await authenticateUser();
+      if (!user.error) {
+        this.setState({
+          user: user,
+          isAuthenticated: true
+        });
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  render () {
+    return (
+      <HashRouter>
       <Switch>
+
         <Route path="/login" component={Login} />
         <Route path="/peoplefeed" component={peopleFeed} />
         <Route path="/eventfeed/" component={eventFeed} />
         <Route path="/map" component={SimpleMap} />
 
+        <Route path="/users/login" component={Login} />
+        <Route path="/users/peoplefeed" component={peopleFeed} />
+        <Route path="/users/eventfeed" component={eventFeed} />
+
+        <Route path="/signup" component={SignUp} />
+        <Route path="/landingpage" component={LandingPage} />
+  
+        <Route path="/users/search" component={Search} />
+
         <Route path="/signup" component={SignUp} />
         <Route path="/landingpage" component={LandingPage} />
 
-        <Route path="/search" component={Search} />
-
         <Route path="/users/:id/edit" component={EditProfile} />
         <Route path="/users/:id" component={ProfilePage} />
+        
+
       </Switch>
     </HashRouter>
-  );
+    );
+  }
 }
 
 export default App;
