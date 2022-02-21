@@ -14,8 +14,6 @@ import Search from "./components/SearchPage";
 
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
-import Header from './components/Header';
-import Footer from './components/Footer';
 
 import "./App.css";
 import './scss/customs.scss';
