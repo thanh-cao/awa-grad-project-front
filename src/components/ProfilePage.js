@@ -66,9 +66,7 @@ class ProfilePage extends React.Component {
                     key={review.id}
                     content={review.content}
                     reviewDate={review.createdAt}
-                    user={review.reviewer.name}
-                    imgUrl={review.reviewer.profilePicture && review.reviewer.profilePicture}
-                    location={review.reviewer.location}
+                    reviewer={review.reviewer}
                     reviewId={review.id}
                     receiverId={review.receiverId}
                     receiverName={name}
@@ -81,10 +79,10 @@ class ProfilePage extends React.Component {
         return (
             <Container className="profile-page px-4">
                 <Row>
-                    <Col xs={5} className="text-center">
+                    <Col xs={5} md={5} className="text-center offset-md-1">
                         <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName + ' profile'} />
                     </Col>
-                    <Col xs={7}>
+                    <Col xs={7} md={6}>
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
                         <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}>
