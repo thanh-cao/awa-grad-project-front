@@ -3,7 +3,6 @@ import React from "react";
 import holmenkollen from "../photos/holmenkollen.PNG";
 import osloSpektrum from "../photos/osloSpektrum.PNG";
 import chicago from "../photos/chicagoMusical.PNG";
-import SimpleMap from "./maps"
 
 import { getEvents } from "../services/ticketmaster";
 // import SimpleMap from "./map";
