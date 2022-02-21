@@ -43,8 +43,8 @@ export default class ReviewItem extends Component {
                 <div className="review-user">
                     <img src={this.props.imgUrl ? this.props.imgUrl : profilePlaceholder} alt={this.props.user + ' profile picture'} />
                     <div>
-                        <p>{this.props.user}, {this.props.location}</p>
-                        <p>{reviewDate}</p>
+                        <p className="mb-0 fw-bold">{this.props.user}, {this.props.location}</p>
+                        <p className="mb-0">{reviewDate}</p>
                     </div>
                 </div>
 
