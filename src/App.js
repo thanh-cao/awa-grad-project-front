@@ -11,7 +11,7 @@ import EventFeed from "./components/EventFeed";
 import SimpleMap from "./components/map";
 
 import SignUp from "./components/signUp";
-import LandingPage from "./components/landingPage";
+import LandingPage from "./components/LandingPage";
 
 import Search from "./components/searchPage";
 
