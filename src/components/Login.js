@@ -3,7 +3,6 @@ import React from 'react';
 const { loginUser, authenticateUser } = require('./loginUser');
 
 class Login extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
