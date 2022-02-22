@@ -27,13 +27,13 @@ export const registerUser = async (name, email, password) => {
 }
 
 export const logoutUser = async () => {
-    return fetch(`${process.env.REACT_APP_API_URL}/users/logout`,
+    return fetch(`${API_URL}/users/logout`,
         { credentials: 'include' })
         .then(res => res.json());
 }
 
 export const authenticateUser = async () => {
-    return fetch('/users/authenticate', {
+    return fetch(`${API_URL}/users/authenticate`, {
         credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
