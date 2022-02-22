@@ -31,15 +31,6 @@ class PeopleFeed extends React.Component {
 
 
   render() {
-    // const {
-    //   name,
-    //   countrycode,
-    //   location,
-    //   profilePicture,
-    //   interests,
-    //   languages,
-    // } = this.props.match.params;
-
     const { people, isLoading, error } = this.state;
     const { search } = this.props;
 
@@ -82,47 +73,7 @@ class PeopleFeed extends React.Component {
       );
     });
 
-    // console.log(people);
-    // const peopleCard = people.map(
-    //   ({
-    //     profilePicture,
-    //     id,
-    //     name,
-    //     email,
-    //     countrycode,
-    //     location,
-    //     interests,
-    //     languages,
-    //   }) => {
-    //     // const styles = {
-    //     //   border: '1px solid black',
-    //     // };
-
-    //     return (
-    //       <div key={id} className="profile-card">
-    //         <br></br>
-    //         <h4>{name}</h4>
-    //         <p>
-    //           Location: {location}
-    //           Interests: {interests}
-    //           Languages: {languages}
-    //         </p>
-    //         <button>
-    //           {" "}
-    //           <Link to={`/users/${id}`}>View profile</Link>
-    //         </button>
-    //       </div>
-    //     );
-    //   }
-    // );
-
-    // return (
-    //   <div style={{ width: 500, margin: '0 auto'}}>
-    //     <h3 style={{ textAlign: 'center' }}>{name}</h3>
-    //     <div>{peopleCard}</div>
-    //   </div>
-    // )
-
+   
     return (
       <div className="people-feed pb-5">
         <div className="menu-items">
@@ -132,16 +83,6 @@ class PeopleFeed extends React.Component {
           </h5>
         </div>
         <ul className="p-0">{peopleToDisplay}</ul>
-        {/* <div className="profile-card">
-          <img src={parryHotter} alt="femalesample" />
-          <div className="inner-profile-card">
-            <h3 className="name-title">Harry</h3>
-            <div></div>
-            <p className="profile-info">
-              {countrycode} {location} {interests} {languages}
-            </p>
-          </div>
-        </div> */}
       </div>
     );
   }
