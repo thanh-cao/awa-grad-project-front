@@ -32,8 +32,6 @@ class PeopleFeed extends React.Component {
     const { people, isLoading, error } = this.state;
     const { search } = this.props;
 
-    console.log(search);
-
     if (error) {
       return <div>Unable to fetch users: {error.message}</div>;
     }
@@ -43,9 +41,7 @@ class PeopleFeed extends React.Component {
     }
 
     const locationByPeople = people.filter((person) => {
-      console.log(person.location);
-      console.log(person.location.includes(search));
-      return person.location.includes(search);
+      return person.location.toLowerCase().includes(search);
     });
 
     const peopleToDisplay = locationByPeople.map((person) => {
@@ -84,7 +80,7 @@ class PeopleFeed extends React.Component {
         <div className="menu-items">
           <h5 style={{ textDecoration: "underline" }}>People</h5>
           <h5>
-            <Link to="/events">Events</Link>
+            <Link to={`/events/${search}`}>Events</Link>
           </h5>
         </div>
         <ul className="p-0">{peopleToDisplay}</ul>
