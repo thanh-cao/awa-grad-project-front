@@ -1,6 +1,7 @@
-const API_URL = 'http://localhost:8080'; 
+const API_URL = process.env.REACT_APP_API_URL;
 
-export function getPeople() {
-    return fetch(`${API_URL}/users`)
-    .then((res) => res.json()); 
+export async function getPeople() {
+    return fetch(`${API_URL}/users`,
+        { credentials: 'include' })
+        .then((res) => res.json());
 }

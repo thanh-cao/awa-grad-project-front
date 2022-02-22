@@ -6,15 +6,13 @@ import Footer from './components/Footer';
 import Login from "./components/Login";
 import PeopleFeed from "./components/PeopleFeed";
 import EventFeed from "./components/EventFeed";
-
 import SignUp from "./components/SignUp";
-
 import LandingPage from "./components/LandingPage";
-
 import Search from "./components/SearchPage";
-
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
+
+import { authenticateUser, logoutUser } from "./services/userAuth";
 
 import "./App.css";
 import './scss/customs.scss';
@@ -30,28 +28,28 @@ class App extends Component {
   }
 
   async componentDidMount() {
-
-    await fetch(`${process.env.REACT_APP_API_URL}/users/authenticate`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(user => {
-        if (user.error) {
-          throw new Error(user.error);
-        }
-        this.setState({ user, isAuthenticated: true })
-      })
-      .catch(err => err);
+    try {
+      const user = await authenticateUser();
+      if (user.error) {
+        throw new Error(user.error);
+      }
+      this.setState({ user, isAuthenticated: true });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   setAuth(auth) {
     this.setState({ isAuthenticated: auth })
   }
 
-  handleLogout() {
-    fetch(`${process.env.REACT_APP_API_URL}/users/logout`, { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        this.setState({ isAuthenticated: false, user: null })
-      })
+  async handleLogout() {
+    try {
+      await logoutUser();
+      this.setState({ user: null, isAuthenticated: false });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
