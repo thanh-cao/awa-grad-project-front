@@ -1,13 +1,14 @@
 import React from 'react';
 import {Button, Form} from 'react-bootstrap';
 import Map from './Map'
-// import PeopleFeed from './PeopleFeed';
+import PeopleFeed from './PeopleFeed';
 
 class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       textInput: "",
+      search: ''
     };
 
     this.textInput = React.createRef();
@@ -21,18 +22,21 @@ class Search extends React.Component {
     });
   }
 
-  handleSubmit(event, searchInput) {
-    event.preventDefault();
-    searchInput = this.state.textInput;
-    console.log(searchInput);
-    return searchInput;
+  handleSubmit(e) {
+    e.preventDefault();
+    const textInput = this.state.textInput
+    const search = textInput.charAt(0).toUpperCase() + textInput.slice(1);
+    
+    this.setState({
+      search
+    })
   }
 
   render() {
     return (
       <div className="m-5">
-        <h1>Where are you going?</h1>
-        <Form onSubmit={this.handleSubmit}>
+        <h2>Where are you going?</h2>
+        <Form onSubmit={(e) => this.handleSubmit(e)} className="mb-5">
           <Form.Group className="d-flex">
             <Form.Control
               name="location"
@@ -41,10 +45,11 @@ class Search extends React.Component {
               placeholder="Destination"
               id="searchButton"
             />
-            <Button variant="primary" type="submit" className="mx-2">GO</Button>
+            <Button variant="primary" type="submit">GO</Button>
           </Form.Group>
         </Form>
-        {/* <PeopleFeed /> */}
+        <h3></h3>
+        <PeopleFeed search={this.state.search}/>
       </div>
     );
   }
