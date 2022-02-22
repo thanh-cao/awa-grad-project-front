@@ -129,6 +129,17 @@ class App extends Component {
           />
           <Route
             exact
+            path="/events/:location"
+            render={props =>
+              isAuthenticated ? (
+                <EventFeed {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
             path="/user/:id/edit"
             render={props =>
               isAuthenticated ? (
