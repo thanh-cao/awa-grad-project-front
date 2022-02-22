@@ -26,9 +26,7 @@ class PeopleFeed extends React.Component {
     } catch (error) {
       this.setState({ error });
     }
-    
   }
-
 
   render() {
     const { people, isLoading, error } = this.state;
@@ -45,26 +43,34 @@ class PeopleFeed extends React.Component {
     }
 
     const locationByPeople = people.filter((person) => {
-      console.log(person.location)
-      console.log(person.location.includes(search))
+      console.log(person.location);
+      console.log(person.location.includes(search));
       return person.location.includes(search);
     });
 
     const peopleToDisplay = locationByPeople.map((person) => {
       return (
-        <Link key={person.id} to={`user/${person.id}`} className="text-decoration-none">
-          <li >
+        <Link
+          key={person.id}
+          to={`user/${person.id}`}
+          className="text-decoration-none"
+        >
+          <li>
             <div className="card my-3">
               <div className="card-bg-gradient"></div>
               <div className="card-body bg-white d-flex">
                 <div>
                   {person.profilePicture && <img src={person.profilePicture} />}
-                  {!person.profilePicture && <img src={malePhoto}/>}
+                  {!person.profilePicture && <img src={malePhoto} />}
                 </div>
                 <div className="mx-4">
                   <h3>{person.name}</h3>
-                  <p><strong>Location:</strong> {person.location}</p>
-                  <p><strong>Interests:</strong> {person.interests}</p>
+                  <p>
+                    <strong>Location:</strong> {person.location}
+                  </p>
+                  <p>
+                    <strong>Interests:</strong> {person.interests}
+                  </p>
                 </div>
               </div>
             </div>
@@ -73,13 +79,12 @@ class PeopleFeed extends React.Component {
       );
     });
 
-   
     return (
       <div className="people-feed pb-5">
         <div className="menu-items">
           <h5 style={{ textDecoration: "underline" }}>People</h5>
           <h5>
-            <Link to="/">Events</Link>
+            <Link to="/events">Events</Link>
           </h5>
         </div>
         <ul className="p-0">{peopleToDisplay}</ul>
