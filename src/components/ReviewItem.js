@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import dateFormat from "dateformat";
-import profilePlaceholder from "../photos/profilePlaceholder.png";
-import WriteReviewModal from "./WriteReviewModel";
+import { Link } from "react-router-dom";
 import { PencilSquare, Trash } from "react-bootstrap-icons";
 import { Button } from "react-bootstrap";
-import {deleteUserReview} from "../services/users";
+import { deleteUserReview } from "../services/users";
+
+import profilePlaceholder from "../photos/profilePlaceholder.png";
+import WriteReviewModal from "./WriteReviewModel";
 
 export default class ReviewItem extends Component {
     async onDelete() {
@@ -41,10 +43,17 @@ export default class ReviewItem extends Component {
         return (
             <div className="review">
                 <div className="review-user">
-                    <img src={this.props.imgUrl ? this.props.imgUrl : profilePlaceholder} alt={this.props.user + ' profile picture'} />
+                    <Link to={`/users/${this.props.reviewer.id}/`}>
+                        <img src={this.props.reviewer.profilePicture ? this.props.reviewer.profilePicture : profilePlaceholder} alt={this.props.reviewer.name + ' profile picture'} />
+                    </Link>
+
                     <div>
-                        <p>{this.props.user}, {this.props.location}</p>
-                        <p>{reviewDate}</p>
+                        <Link className="text-decoration-none" to={`/users/${this.props.reviewer.id}/`}>
+                            <p className="mb-0 fw-bold">
+                                {this.props.reviewer.name}, {this.props.reviewer.location}
+                            </p>
+                        </Link>
+                        <p className="mb-0">{reviewDate}</p>
                     </div>
                 </div>
 

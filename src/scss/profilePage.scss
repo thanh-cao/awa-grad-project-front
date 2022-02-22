@@ -1,82 +1,75 @@
-  .profile-page {
-    p, ul {
-        margin: 0;
-        padding: 0;
+.profile-page {
+  margin: 50px 30px;
+
+  img {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 578px) {
+    img {
+      width: 100px;
+      height: 100px;
+    }
+    p {
+        margin-bottom: 0;
+    }
+  }
+
+  h2 {
+    font-size: 30px;
+  }
+
+  .about-info {
+    text-align: left;
+    margin-bottom: 50px;
+    padding-top: 20px;
+    position: relative;
+
+    .extra-info {
+      font-size: 14px;
+      margin-top: 20px;
+
+      p {
+        margin: 10px 0;
+      }
     }
 
-    margin: 50px 30px;
+    .edit-profile-btn {
+      position: absolute;
+      top: 8px;
+      right: 10px;
+    }
+  }
 
-    .main-info {
-        display: flex;
-        justify-content: space-around;
-        margin-bottom: 50px;
-        text-align: right;
+  .user-reviews {
+    text-align: left;
 
-            img {
-                width: 200px;
-                height: 200px;
-                border-radius: 50%;
-                object-fit: cover;
-            }
-
-            div{
-                padding-left: 30px;
-
-                h2 {
-                    font-size: 30px;
-                }
-            }
+    .review {
+      margin-bottom: 30px;
     }
 
-    .about-info {
-        text-align: left;
-        margin-bottom: 50px;
-        padding-top: 20px;
-        position: relative;
-    
-
-        .extra-info {
-            font-size: 14px;
-            margin-top: 20px;
-
-            p{
-                margin: 10px 0;
-            }
-        }
-
-        .edit-profile-btn {
-            position: absolute;
-            top: 8px;
-            right: 10px;
-            // border: 1px solid rgb(100,100,100);
-            // border-radius: 4px;
-            // padding: 5px 10px;
-            // cursor: pointer;
-        }
-
-
+    .review-user {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
     }
 
-    .user-reviews {
-        text-align: left;
-
-        .review {
-            margin-bottom: 30px;
-        }
-
-        .review-user {
-            display: flex;
-            align-items: center;
-            margin-top: 10px;
-            font-size: 12px;
-        }
-
-        img{
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-right: 10px;
-        }
+    img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
     }
+  }
+
+  @media (min-width: 992px) {
+      &.container {
+          max-width: 768px;
+      }
+  }
 }
-   

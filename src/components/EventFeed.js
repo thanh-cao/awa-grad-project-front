@@ -2,10 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { getEvents } from "../services/ticketmaster";
-import SimpleMap from "./map";
-import peopleFeed from "./peopleFeed";
+import PeopleFeed from "./PeopleFeed";
+import SimpleMap from "./Map";
 
-class eventFeed extends React.Component {
+class EventFeed extends React.Component {
   constructor(props) {
     super(props);
 
@@ -143,6 +143,7 @@ class eventFeed extends React.Component {
 
     const eventElements = events.map((event) => {
       return (
+        
         <div key={event.id} className="event-box">
           <a className="link-text" href={event.url}>
             <li className="event">
@@ -202,7 +203,7 @@ class eventFeed extends React.Component {
   }
 }
 
-export default eventFeed;
+export default EventFeed;
 
 // return (
 //   <div className="people-feed">

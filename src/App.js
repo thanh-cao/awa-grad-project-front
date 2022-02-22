@@ -1,77 +1,172 @@
-import { HashRouter, Switch, Route } from 'react-router-dom';
+import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Login from "./components/Login";
-import peopleFeed from "./components/peopleFeed";
-import eventFeed from "./components/eventFeed";
-import SimpleMap from "./components/map";
-
-import SignUp from "./components/signUp";
-import LandingPage from "./components/landingPage";
-
-import Search from "./components/searchPage";
-
+import PeopleFeed from "./components/PeopleFeed";
+import EventFeed from "./components/EventFeed";
+import SignUp from "./components/SignUp";
+import LandingPage from "./components/LandingPage";
+import Search from "./components/SearchPage";
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
+import FlashMessage from "./components/FlashMessage";
+
+import { authenticateUser, logoutUser } from "./services/userAuth";
 
 import "./App.css";
-import "./components/Login.css";
-import "./components/landingpagephoto.css";
+import './scss/customs.scss';
 import "./components/map.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-const { authenticateUser } = require('./components/loginUser');
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       user: null,
-      isAuthenticated: false
+      isAuthenticated: false,
+      flashMsg: {
+        message: null,
+        variant: null
+      }
     };
   }
 
   async componentDidMount() {
     try {
       const user = await authenticateUser();
-      if (!user.error) {
-        this.setState({
-          user: user,
-          isAuthenticated: true
-        });
+      if (user.error) {
+        throw new Error(user.error);
       }
+      this.setState({ user, isAuthenticated: true });
     } catch (error) {
       console.log(error);
     }
   }
-  render () {
+
+  setAuth(auth) {
+    if (auth) {
+      const successLogin = {
+        message: 'Logged in successfully',
+        variant: 'success'
+      };
+      this.setState({ flashMsg: successLogin });
+    }
+    this.setState({ isAuthenticated: auth })
+  }
+
+  async handleLogout() {
+    const successLogout = {
+      message: 'Logged out successfully',
+      variant: 'success'
+    };
+
+    try {
+      await logoutUser();
+      this.setState({ user: null, isAuthenticated: false, flashMsg: successLogout });
+    } catch (error) {
+      this.setState({ flashMsg: error });
+    }
+  }
+
+  render() {
+    const { isAuthenticated, user, flashMsg } = this.state;
+    console.log('Is Authenticated: ', isAuthenticated);
+    console.log('User: ', user)
+
     return (
       <HashRouter>
-      <Switch>
+        <Header isAuthenticated={isAuthenticated} handleLogout={() => this.handleLogout()} />
 
-        <Route path="/login" component={Login} />
-        <Route path="/peoplefeed" component={peopleFeed} />
-        <Route path="/eventfeed/" component={eventFeed} />
-        <Route path="/map" component={SimpleMap} />
+        {this.state.flashMsg.message && <FlashMessage isShown variant={flashMsg.variant} message={`${flashMsg.message}`} />}
 
-        <Route path="/users/login" component={Login} />
-        <Route path="/users/peoplefeed" component={peopleFeed} />
-        <Route path="/users/eventfeed" component={eventFeed} />
+        <Switch>
+          <Route exact path="/" component={LandingPage} />
+          <Route path="/signup" component={SignUp} />
+          <Route
+            exact
+            path="/login"
+            render={props =>
+              !isAuthenticated ? (
+                <Login {...props} setAuth={this.setAuth.bind(this)} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/people"
+            render={props =>
+              isAuthenticated ? (
+                <PeopleFeed {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/search"
+            render={props =>
+              isAuthenticated ? (
+                <Search {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/events"
+            render={props =>
+              isAuthenticated ? (
+                <EventFeed {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/user/:id/edit"
+            render={props =>
+              isAuthenticated ? (
+                <EditProfile {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          <Route
+            exact
+            path="/user/:id"
+            render={props =>
+              isAuthenticated ? (
+                <ProfilePage {...props} />
+              ) : (
+                <Redirect to="/login" />
+              )
+            }
+          />
+          {/* <Route path="/signup" component={SignUp} />
+        <Route exact path="/" component={LandingPage} />
+        <Route path="/login">
+          <Login
+          handleAuthentication={this.handleAthentication.bind(this)}/>
+        </Route>
+        <ProtectedRoutes path="/people" component={peopleFeed} /> 
+        <ProtectedRoutes path="/events" component={EventFeed} />
+        <ProtectedRoutes path="/search" component={Search} />
+        <ProtectedRoutes path="/users/:id/edit" component={EditProfile} />
+        <ProtectedRoutes path="/users/:id" component={ProfilePage} /> */}
 
-        <Route path="/signup" component={SignUp} />
-        <Route path="/landingpage" component={LandingPage} />
-  
-        <Route path="/users/search" component={Search} />
 
-        <Route path="/signup" component={SignUp} />
-        <Route path="/landingpage" component={LandingPage} />
+        </Switch>
 
-        <Route path="/users/:id/edit" component={EditProfile} />
-        <Route path="/users/:id" component={ProfilePage} />
-        
+        <Footer />
 
-      </Switch>
-    </HashRouter>
+      </HashRouter >
     );
   }
 }

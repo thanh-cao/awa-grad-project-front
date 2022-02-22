@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 import { Container, Row, Col, Button } from 'react-bootstrap';
+import { HouseDoor, ChatQuote } from 'react-bootstrap-icons';
 
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import { getUserProfile, getUserReviews } from "../services/users";
@@ -52,7 +53,7 @@ class ProfilePage extends React.Component {
             return <div>Loading....</div>
         }
 
-        const { id, name, createdAt, about, profilePicture, interests, languages } = this.state.user
+        const { id, name, createdAt, about, profilePicture, interests, languages, location } = this.state.user
         const { reviews } = this.state;
         const firstName = name.split(' ')[0]
 
@@ -65,9 +66,7 @@ class ProfilePage extends React.Component {
                     key={review.id}
                     content={review.content}
                     reviewDate={review.createdAt}
-                    user={review.reviewer.name}
-                    imgUrl={review.reviewer.profilePicture && review.reviewer.profilePicture}
-                    location={review.reviewer.location}
+                    reviewer={review.reviewer}
                     reviewId={review.id}
                     receiverId={review.receiverId}
                     receiverName={name}
@@ -78,13 +77,17 @@ class ProfilePage extends React.Component {
         });
 
         return (
-            <div className="profile-page">
-                <div className="main-info">
-                    <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName + ' profile'} />
-                    <div>
+            <Container className="profile-page px-4">
+                <Row>
+                    <Col xs={5} md={5} className="text-center offset-md-1">
+                        <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName + ' profile'} />
+                    </Col>
+                    <Col xs={7} md={6}>
                         <h2>Hi, I'm {firstName}</h2>
                         <p><small>Joined in {joined} </small></p>
-                        <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}><small>{reviews.count} Reviews</small></p>
+                        <p onClick={() => { document.querySelector('#userReviews').scrollIntoView({ behavior: 'smooth', block: 'center' }) }}>
+                            <small>{reviews.count} Review{reviews.count > 1 ? 's' : null}</small>
+                        </p>
 
                         <WriteReviewModal
                             receiverId={id}
@@ -93,31 +96,35 @@ class ProfilePage extends React.Component {
                             btnText={`Write a review to ${firstName}`}
                             refresh={this.populateUserData.bind(this)}
                         />
+                    </Col>
+                </Row>
+                <hr />
+                <Row className="about-info">
+                    <Col>
+                        <h3>About</h3>
+                        <p>{about ? about : `No info added yet...`}</p>
 
-                    </div>
-                </div>
+                        <h3>Interest</h3>
+                        <p>{interests ? interests : `No info added yet...`}</p>
+
+                        <div className="extra-info">
+                            <p><HouseDoor className="me-2 text-primary" />From {location}</p>
+                            <p><ChatQuote className="me-2 text-primary" />Speaks {languages}</p>
+                        </div>
+
+                        <Link to={`/users/${id}/edit`} className="edit-profile-btn btn btn-outline-primary">
+                            Edit
+                        </Link>
+                    </Col>
+                </Row>
                 <hr />
-                <div className="about-info">
-                    <h3>About</h3>
-                    <p>{about ? about : `no info added yet..`}</p>
-                    <h4>Interest</h4>
-                    <p>{interests ? interests : `No info added yet..`}</p>
-                    <div className="extra-info">
-                        <p>From Oslo, Norway</p>
-                        <p>Speaks {languages}</p>
-                    </div>
-                    <Link to={`/users/${id}/edit`}>
-                        <Button variant="outline-primary" className="edit-profile-btn">Edit</Button>
-                    </Link>
-                </div>
-                <hr />
-                <div id="userReviews" className="user-reviews">
-                    <h3>Reviews <span>({reviews.count})</span></h3>
+                <Row id="userReviews" className="user-reviews">
+                    <h3>Review{reviews.count > 1 ? 's' : null} ({reviews.count})</h3>
 
                     {reviewList}
 
-                </div>
-            </div>
+                </Row>
+            </Container>
         )
     }
 }

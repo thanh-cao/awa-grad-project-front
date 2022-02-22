@@ -1,6 +1,7 @@
 import React from 'react';
+import {Button, Form} from 'react-bootstrap';
 
-const { loginUser, authenticateUser } = require('./loginUser');
+const { loginUser } = require('../services/userAuth');
 
 class Login extends React.Component {
   constructor(props) {
@@ -24,7 +25,6 @@ class Login extends React.Component {
   }
 
   async handleSubmit(event) {
-    console.log('handleSubmit');
     event.preventDefault();
     const { email, password } = this.state;
     try {
@@ -34,44 +34,26 @@ class Login extends React.Component {
         throw new Error(user.error);
       }
 
-      localStorage.setItem('userAthenticated', JSON.stringify(user));
-      return this.props.history.push('/users/search');
+      await this.props.setAuth(true)
+      this.props.history.replace('/search');
 
     } catch (error) {
       console.log(error);
     }
   }
-
-  async componentDidMount() {
-   /*  try {
-      const user = await authenticateUser();
-      if (!user.error) {
-        this.props.history.push('/users/eventfeed');
-      }
-    } catch (error) {
-      console.log(error);
-    } */
-  }
-
   
 
   render() {
     return (
-        <div className='main'>
-            <div className='header'></div>        
+        <div className='w-50 m-auto my-5'>       
             <h1 className='logInH1'>Login</h1>
-            <div className='inputFields'>
-                <label>
-                <input name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name'/>
-                </label>
+            <Form onSubmit={this.handleSubmit}>
+                <Form.Control name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name'/>
                 <br></br> 
-                <label>
-                <input name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
-                </label>
+                <Form.Control name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
                 <br></br>
-                <button onClick={this.handleSubmit} class="logInButton" >Log in here</button>
-            </div> 
-            <div className='footer'></div>
+                <Button type="submit" variant="outline-primary">Log in here</Button>
+            </Form> 
       </div>
     );
   }
