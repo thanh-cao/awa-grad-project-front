@@ -2,6 +2,9 @@
   "name": "client",
   "version": "0.1.0",
   "private": true,
+  "engines": {
+    "node": "14.x"
+  },
   "dependencies": {
     "@googlemaps/react-wrapper": "^1.1.24",
     "@react-google-maps/api": "^2.7.0",

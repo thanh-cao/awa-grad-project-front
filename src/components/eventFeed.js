@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { getEvents } from "../services/ticketmaster";
-import SimpleMap from "./map";
+import SimpleMap from "./Map";
 
 class EventFeed extends React.Component {
   constructor(props) {

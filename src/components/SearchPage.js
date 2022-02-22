@@ -1,6 +1,6 @@
 import React from 'react';
 import {Button, Form} from 'react-bootstrap';
-import Map from './map'
+import Map from './Map'
 // import PeopleFeed from './PeopleFeed';
 
 class Search extends React.Component {

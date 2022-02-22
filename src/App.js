@@ -1,7 +1,8 @@
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 import React, { Component } from 'react';
 
-import Header from './components/Header'
+import Header from './components/Header';
+import Footer from './components/Footer';
 import Login from "./components/Login";
 import PeopleFeed from "./components/PeopleFeed";
 import EventFeed from "./components/EventFeed";
