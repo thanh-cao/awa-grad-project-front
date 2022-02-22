@@ -35,6 +35,7 @@ class peopleFeed extends React.Component {
   }
 
   render() {
+    console.log(this.props.adress);
     const {
       name,
       countrycode,
