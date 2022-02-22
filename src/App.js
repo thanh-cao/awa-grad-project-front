@@ -11,6 +11,7 @@ import LandingPage from "./components/LandingPage";
 import Search from "./components/SearchPage";
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
+import FlashMessage from "./components/FlashMessage";
 
 import { authenticateUser, logoutUser } from "./services/userAuth";
 
@@ -23,7 +24,11 @@ class App extends Component {
     super(props);
     this.state = {
       user: null,
-      isAuthenticated: false
+      isAuthenticated: false,
+      flashMsg: {
+        message: null,
+        variant: null
+      }
     };
   }
 
@@ -40,26 +45,41 @@ class App extends Component {
   }
 
   setAuth(auth) {
+    if (auth) {
+      const successLogin = {
+        message: 'Logged in successfully',
+        variant: 'success'
+      };
+      this.setState({ flashMsg: successLogin });
+    }
     this.setState({ isAuthenticated: auth })
   }
 
   async handleLogout() {
+    const successLogout = {
+      message: 'Logged out successfully',
+      variant: 'success'
+    };
+
     try {
       await logoutUser();
-      this.setState({ user: null, isAuthenticated: false });
+      this.setState({ user: null, isAuthenticated: false, flashMsg: successLogout });
     } catch (error) {
-      console.log(error);
+      this.setState({ flashMsg: error });
     }
   }
 
   render() {
-    const { isAuthenticated, user } = this.state
+    const { isAuthenticated, user, flashMsg } = this.state;
     console.log('Is Authenticated: ', isAuthenticated);
     console.log('User: ', user)
 
     return (
       <HashRouter>
         <Header isAuthenticated={isAuthenticated} handleLogout={() => this.handleLogout()} />
+
+        {this.state.flashMsg.message && <FlashMessage isShown variant={flashMsg.variant} message={`${flashMsg.message}`} />}
+
         <Switch>
           <Route exact path="/" component={LandingPage} />
           <Route path="/signup" component={SignUp} />
