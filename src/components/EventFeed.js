@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 import { getEvents } from "../services/ticketmaster";
+import PeopleFeed from "./PeopleFeed";
 import SimpleMap from "./Map";
 
 class EventFeed extends React.Component {
@@ -179,10 +180,6 @@ class EventFeed extends React.Component {
         </div>
 
         <div className="header"></div>
-        <SimpleMap>
-
-        </SimpleMap>
-
         <h1 className="header-peoplefeed">
           Destination
           <br></br>
@@ -193,6 +190,7 @@ class EventFeed extends React.Component {
           <h5 style={{ textDecoration: "underline" }}>Events</h5>
         </div>
         <SimpleMap events={this.state.events} adress={this.state.adress}></SimpleMap>
+        <peopleFeed adress={this.state.adress}></peopleFeed>
         {eventElements.length ? (
           <ul className="events">{eventElements}</ul>
         ) : (

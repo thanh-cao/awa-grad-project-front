@@ -20,8 +20,6 @@ class SimpleMap extends Component {
   // };
 
   render() {
-    console.log(typeof "map lng", this.props.adress.lng);
-    console.log("map lat", this.props.adress.lat);
     const anyReactComponents = this.props.events.map((el) => {
       return (
         <AnyReactComponent key={el.id} lat={el.lat} lng={el.lng} text={el.name}>
