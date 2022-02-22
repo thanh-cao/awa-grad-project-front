@@ -18,8 +18,6 @@ import EditProfile from "./components/EditProfile";
 
 import "./App.css";
 import './scss/customs.scss';
-import "./components/Login.css";
-import "./components/landingpagephoto.css";
 import "./components/map.css";
 
 class App extends Component {
