@@ -15,7 +15,7 @@ class EventFeed extends React.Component {
       isLoading: false,
       error: null,
       city: "",
-      adress: {}
+      adress: {},
     };
 
     this.textInput = React.createRef();
@@ -23,8 +23,6 @@ class EventFeed extends React.Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-
 
   handleChange(event) {
     this.setState({
@@ -34,36 +32,37 @@ class EventFeed extends React.Component {
 
   async handleSubmit(event, searchInput) {
     event.preventDefault();
-    const events = await getEvents(this.state.textInput)
-    console.log(events)
-    this.props.history.replace("/eventfeed/" + this.state.textInput)
-    const searchedEvent = this.getEventsPlease(events)
+    const events = await getEvents(this.state.textInput);
+    console.log(events);
+    this.props.history.replace("/events/" + this.state.textInput);
+    const searchedEvent = this.getEventsPlease(events);
     this.setState({
       events: searchedEvent,
       textInput: searchInput,
-    })
-    console.log(this.state.textInput)
+    });
+    console.log(this.state.textInput);
   }
 
   getEventsPlease(events) {
     const eventLocation = [];
-    const adress = fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.city},+EU&key=AIzaSyAGIPSSAJGsWmI8LPCFg5gqo4TZDRthXf8`)
-              .then(response => response.json())
-              .then(data => {
-                this.setState({
-                  ...this.state,
-                  adress: data.results[0].geometry.location
-                })
-                return data.results[0].geometry.location;
-              });
-    console.log(adress)
+    const adress = fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${this.state.city},+EU&key=AIzaSyAGIPSSAJGsWmI8LPCFg5gqo4TZDRthXf8`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        this.setState({
+          ...this.state,
+          adress: data.results[0].geometry.location,
+        });
+        return data.results[0].geometry.location;
+      });
+    console.log(adress);
 
     events["_embedded"].events.forEach((event) => {
       const location = event["_embedded"].venues[0].location;
       const venueName = event["_embedded"].venues[0].name;
       const dates = event.dates.start;
       const url = event.url;
-      
 
       if (!eventLocation.find((el) => el.name === event.name)) {
         eventLocation.push({
@@ -83,25 +82,24 @@ class EventFeed extends React.Component {
   }
 
   async componentDidMount() {
-    console.log('didmount')
+    console.log("didmount");
     try {
       this.setState({ isLoading: true });
       const city = this.props.history.location?.pathname.split("/")[2];
-      console.log(this.props.history.location?.pathname.split("/"))
+      console.log(this.props.history.location?.pathname.split("/"));
       if (city) {
         await this.setState({
           ...this.state,
-          city
-        })
+          city,
+        });
       } else {
         await this.setState({
           ...this.state,
-          city: "Oslo"
-        })
+          city: "Oslo",
+        });
       }
 
       const events = await getEvents(this.state.city);
-      
 
       this.setState({ events: this.getEventsPlease(events), isLoading: false });
     } catch (error) {
@@ -112,17 +110,17 @@ class EventFeed extends React.Component {
   componentDidUpdate() {
     const city = this.props.history.location?.pathname.split("/")[2];
 
-    if(city && city !== this.state.city) {
+    if (city && city !== this.state.city) {
       this.setState({
         ...this.state,
-        city
-      })
+        city,
+      });
     }
   }
 
   render() {
     const { events, isLoading, error } = this.state;
-    console.log('render', this.props.history.location)
+    console.log("render", this.props.history.location);
 
     if (error) {
       return (
@@ -143,7 +141,6 @@ class EventFeed extends React.Component {
 
     const eventElements = events.map((event) => {
       return (
-        
         <div key={event.id} className="event-box">
           <a className="link-text" href={event.url}>
             <li className="event">
@@ -186,10 +183,15 @@ class EventFeed extends React.Component {
           <span className="searchedDest">:{this.state.city}</span>
         </h1>
         <div className="menu-items">
-          <h5><Link to="/peopleFeed">People</Link></h5>
+          <h5>
+            <Link to="/search">People</Link>
+          </h5>
           <h5 style={{ textDecoration: "underline" }}>Events</h5>
         </div>
-        <SimpleMap events={this.state.events} adress={this.state.adress}></SimpleMap>
+        <SimpleMap
+          events={this.state.events}
+          adress={this.state.adress}
+        ></SimpleMap>
         <peopleFeed adress={this.state.adress}></peopleFeed>
         {eventElements.length ? (
           <ul className="events">{eventElements}</ul>
