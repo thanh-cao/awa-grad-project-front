@@ -106,6 +106,10 @@ h1 {
   border-radius: 0.5rem;
 }
 
+.card,
+.card-body {
+  position: relative
+}
 .card-bg-gradient {
   position: absolute;
   top: -0.35rem;
