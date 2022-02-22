@@ -24,9 +24,7 @@ class Search extends React.Component {
 
   handleSubmit(e) {
     e.preventDefault();
-    const textInput = this.state.textInput
-    const search = textInput.charAt(0).toUpperCase() + textInput.slice(1);
-    console.log('Search:', search)
+    const search = this.state.textInput.toLowerCase();
     
     this.setState({
       search
@@ -34,6 +32,7 @@ class Search extends React.Component {
   }
 
   render() {
+    const {search} = this.state;
     return (
       <div className="m-5">
         <h2>Where are you going?</h2>
@@ -49,9 +48,8 @@ class Search extends React.Component {
             <Button variant="primary" type="submit">GO</Button>
           </Form.Group>
         </Form>
-        <h3></h3>
+        <h3>{search.charAt(0).toUpperCase() + search.slice(1)}</h3>
         <PeopleFeed search={this.state.search}/>
-        
       </div>
     );
   }
