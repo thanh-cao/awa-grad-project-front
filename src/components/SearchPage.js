@@ -26,6 +26,7 @@ class Search extends React.Component {
     e.preventDefault();
     const textInput = this.state.textInput
     const search = textInput.charAt(0).toUpperCase() + textInput.slice(1);
+    console.log('Search:', search)
     
     this.setState({
       search
@@ -50,6 +51,7 @@ class Search extends React.Component {
         </Form>
         <h3></h3>
         <PeopleFeed search={this.state.search}/>
+        
       </div>
     );
   }
