@@ -13,6 +13,7 @@ import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
 import FlashMessage from "./components/FlashMessage";
 
+import { flash } from './services/helpers';
 import { authenticateUser, logoutUser } from "./services/userAuth";
 
 import "./App.css";
@@ -24,11 +25,7 @@ class App extends Component {
     super(props);
     this.state = {
       user: null,
-      isAuthenticated: false,
-      flashMsg: {
-        message: null,
-        variant: null
-      }
+      isAuthenticated: false
     };
   }
 
@@ -46,31 +43,25 @@ class App extends Component {
 
   setAuth(auth) {
     if (auth) {
-      const successLogin = {
-        message: 'Logged in successfully',
-        variant: 'success'
-      };
-      this.setState({ flashMsg: successLogin });
+      flash('Logged in successfully', 'success');
+    } else {
+      flash('Unable to authenticate', 'error');
     }
     this.setState({ isAuthenticated: auth })
   }
-
+  
   async handleLogout() {
-    const successLogout = {
-      message: 'Logged out successfully',
-      variant: 'success'
-    };
-
     try {
       await logoutUser();
-      this.setState({ user: null, isAuthenticated: false, flashMsg: successLogout });
+      flash('Logged out successfully', 'success');
+      this.setState({ user: null, isAuthenticated: false });
     } catch (error) {
-      this.setState({ flashMsg: error });
+      flash(error, 'error');
     }
   }
 
   render() {
-    const { isAuthenticated, user, flashMsg } = this.state;
+    const { isAuthenticated, user } = this.state;
     console.log('Is Authenticated: ', isAuthenticated);
     console.log('User: ', user)
 
@@ -78,11 +69,15 @@ class App extends Component {
       <HashRouter>
         <Header isAuthenticated={isAuthenticated} handleLogout={() => this.handleLogout()} />
 
-        {this.state.flashMsg.message && <FlashMessage isShown variant={flashMsg.variant} message={`${flashMsg.message}`} />}
+        <FlashMessage />
 
         <Switch>
           <Route exact path="/" component={LandingPage} />
-          <Route path="/signup" component={SignUp} />
+          <Route
+            path="/signup"
+            render={props => 
+            <SignUp {...props} setAuth={this.setAuth.bind(this)} />}
+          />
           <Route
             exact
             path="/login"

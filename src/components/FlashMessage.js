@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Alert } from 'react-bootstrap';
 
+import { flashEmitter } from '../services/helpers';
 export default class FlashMessage extends Component {
     constructor(props) {
         super(props);
@@ -12,14 +13,14 @@ export default class FlashMessage extends Component {
     }
 
     componentDidMount() {
-        if (this.props.isShown) {
+        flashEmitter.addListener('flash', (message, variant) => {
             this.setState({
                 show: true,
-                message: this.props.message,
-                variant: this.props.variant
+                message,
+                variant
             });
-        }
-        this.hideFlashMessage();
+            this.hideFlashMessage();
+        });
     }
 
     hideFlashMessage() {
@@ -32,35 +33,19 @@ export default class FlashMessage extends Component {
         }, 3000);
     }
 
-    componentDidUpdate(prevProps) {
-        if (prevProps.message !== this.props.message) {
-            this.setState({
-                show: this.props.isShown,
-                message: this.props.message,
-                variant: this.props.variant
-            });
-        }
-    }
-
-    componentWillUnmount() {
-        this.setState({
-            show: false,
-            message: null,
-            variant: null
-        });
-    }
-
     render() {
-        const variant = this.props.variant === 'success' ? 'primary' : 'danger';
-        if (this.state.show)
+        const variant = this.state.variant === 'success' ? 'primary' : 'danger';
+        if (this.state.show) {
             return (
                 <div className="container">
                     <Alert variant={variant} className="flash-message" onClose={() => this.setState({ show: false })
                     } dismissible >
-                        {this.props.message}
+                        {this.state.message}
                     </Alert >
                 </div>
-            )
+            );
+        }
+
         return null;
     };
 }

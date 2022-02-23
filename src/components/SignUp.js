@@ -1,5 +1,7 @@
 import React from 'react';
 import { Form, Button } from 'react-bootstrap';
+
+import { flash } from '../services/helpers';
 import { registerUser } from '../services/userAuth';
 
 class SignUp extends React.Component {
@@ -21,19 +23,26 @@ class SignUp extends React.Component {
 
   async handleSignup() {
     const { name, email, password } = this.state;
+
+    if (name === '' || email === '' || password === '') {
+      flash('Please fill in all fields', 'error');
+      return;
+    };
+
     try {
       const user = await registerUser(name, email, password);
-      
+
       if (user.error) {
         throw new Error(user.error);
       }
 
       this.props.setAuth(true);
-      this.props.setUser(user);
+      // this.props.setUser(user);
+      flash('New user created successfully', 'success');
       this.props.history.push(`/user/${user.id}/edit`);
 
     } catch (err) {
-      console.log(err);
+      flash(err.message, 'error');
     }
   }
 
@@ -44,13 +53,13 @@ class SignUp extends React.Component {
         <Form>
           <Form.Control
             type="text"
-            placeholder='name'
+            placeholder='Name'
             id='name'
             onChange={(e) => this.handleChange(e, 'name')} />
           <br />
           <Form.Control
             type="email"
-            placeholder='E-mail'
+            placeholder='Email'
             id='email'
             onChange={(e) => this.handleChange(e, 'email')} />
           <br />
