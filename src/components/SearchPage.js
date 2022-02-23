@@ -1,8 +1,14 @@
 import React from 'react';
 import {Button, Form} from 'react-bootstrap';
+import {GoogleMap} from "@react-google-maps/api";
+
 // import Map from './Map2';
 import EventFeed2 from './EventFeed2';
 import PeopleFeed from './PeopleFeed';
+import { getCurrentPosition } from './getCurrentLocation';
+
+const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
+
 
 class Search extends React.Component {
   constructor(props) {
@@ -17,6 +23,23 @@ class Search extends React.Component {
     this.textInput = React.createRef();
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  async componentDidMount(){
+    getCurrentPosition(position => {
+      let lat = position['coords']['latitude'];
+      let lng = position['coords']['longitude'];
+      this.reverseGeocodeCoordinates(lat, lng)
+    })
+  }
+
+  reverseGeocodeCoordinates(lat, lng){
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=${API_KEY}`)
+    .then(res => res.json())
+    .then(data => {
+      const currentAddress = data.results[0].address_components[3].long_name.toLowerCase();;
+      this.setState({search: currentAddress})
+    })
   }
 
   handleChange(e, field) {
@@ -43,6 +66,7 @@ class Search extends React.Component {
 
   render() {
     const {search, date, view} = this.state;
+    console.log(search);
 
     return (
       <div className="m-4">

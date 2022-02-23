@@ -1,5 +1,6 @@
 
-export function latitude(cb){
+export function getCurrentPosition(cb){
+    console.log(navigator.geolocation.getCurrentPosition);
     return navigator.geolocation.getCurrentPosition(cb);
 }
 
