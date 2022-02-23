@@ -1,43 +1,49 @@
 import React, {useState, useEffect} from 'react';
 import Map2 from './Map2'
+import dateFormat from "dateformat";
 import {Link} from 'react-router-dom';
 // import { getEvents } from "../services/ticketmaster";
 
 
 function EventFeed2(props) {
     const [events, setEvents] = useState([]);
+    const date = new Date(props.date);
+    const startDate = `${props.date}T00:00:00Z`;
+    const endDate = dateFormat(date.setDate(date.getDate() + 1), 'isoUtcDateTime');
 
     useEffect(() => {
-        fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=Q8gNHKGy7bs82CG6jd3z8kuLS1MNHa2S&keyword=${props.search}`)
+       fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&locale=*&startDateTime=${startDate}&endDateTime=${endDate}&size=40&city=${props.search}`)
         .then(res => res.json())
         .then(data => {
-            // setEvents(data._embedded.events);
             const events = data._embedded.events;
-            const filteredEvents = events.filter(event => {
-                return event.dates.start.localDate === props.date;
-            })
 
-            setEvents(filteredEvents);
+            setEvents(events);
         })
-    }, [props.search, props.date]);
+    }, [props.search, props.date, startDate, endDate]);
 
         const eventElements = events.map(event => {
-            return <Link to={event.url} key={event.id} className="text-decoration-none">
+            console.log(event);
+            return <a href={event.url} key={event.id} className="text-decoration-none" target="_blank" rel="noreferrer">
                 <div className="card my-3">
                     <div className="card-bg-gradient"></div>
                     <div className="card-body bg-white d-flex justify-content-between">
-                        <img src={event.images[0].url} alt="Event"/>
-                        <h4>{event.name}</h4>
-                        <p><small><strong>When:</strong> {event.dates.start.localDate} - {event.dates.start.localTime}</small></p>
-                    </div>
+                        <div>
+                            <img src={event.images[0].url} alt="Event"/>
+                        </div>
+                        <div className="mx-4 flex-grow-1">
+                            <h5>{event.name}</h5>
+                            <p className="my-0"><strong>Venue: </strong>{event._embedded.venues[0].name}</p>
+                            <p><strong>When:</strong> {event.dates.start.localDate} - {event.dates.start.localTime}</p>
+                        </div>
+                         </div>
                 </div>
-            </Link>
+            </a>
     })
 
     return (
-        <div>
+        <div className="mb-5">
             <Map2 search={props.search} events={events}/>
-            {eventElements}
+             {eventElements}
         </div>
         
     )

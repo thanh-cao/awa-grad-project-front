@@ -1,10 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import femalePhoto from "../photos/sampleprofilephotofemale.png";
 import malePhoto from "../photos/sampleprofilephotomale.PNG";
-import parryHotter from "../photos/ParryHotter.jpg";
-
 import { getPeople } from "../services/people";
 
 class PeopleFeed extends React.Component {
