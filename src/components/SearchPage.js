@@ -8,8 +8,9 @@ class Search extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      textInput: "",
+      destination: "",
       search: '',
+      date: new Date().toISOString().slice(0, 10), 
       view: 'people'
     };
 
@@ -18,18 +19,21 @@ class Search extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event) {
+  handleChange(e, field) {
+    console.log(field)
+    console.log(e.target.value)
     this.setState({
-      textInput: event.target.value
+      [field]: e.target.value
     });
   }
 
   handleSubmit(e) {
     e.preventDefault();
-    const search = this.state.textInput.toLowerCase();
+    const search = this.state.destination.toLowerCase();
     
     this.setState({
-      search
+      search,
+
     })
   }
 
@@ -38,8 +42,7 @@ class Search extends React.Component {
   }
 
   render() {
-    const {search, view} = this.state;
-
+    const {search, date, view} = this.state;
 
     return (
       <div className="m-5">
@@ -48,21 +51,25 @@ class Search extends React.Component {
           <Form.Group className="d-flex">
             <Form.Control
               name="location"
-              onChange={this.handleChange}
+              onChange={(e) => this.handleChange(e, 'destination')}
               type="text"
               placeholder="Destination"
               id="searchButton"
             />
+            <Form.Control 
+            type="date" 
+            onChange={(e)=> this.handleChange(e, 'date')}/>
             <Button variant="primary" type="submit">GO</Button>
           </Form.Group>
+          
         </Form>
         <h3>{search.charAt(0).toUpperCase() + search.slice(1)}</h3>
         <div className="menu-items">
           <h5 onClick={() => this.handleView('people')}>People</h5>
           <h5 onClick={() => this.handleView('events')}>Events</h5>
         </div>
-        {view === 'people' ? <PeopleFeed search={this.state.search}/> :
-        <EventFeed2 search={search}/>}
+        {view === 'people' ? <PeopleFeed search={search} date={date}/> :
+        <EventFeed2 search={search} date={date}/>}
       </div>
     );
   }
