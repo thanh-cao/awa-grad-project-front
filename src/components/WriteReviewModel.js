@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal, Button, Form } from 'react-bootstrap';
 import { createUserReview, updateUserReview } from '../services/users';
-
+import { flash } from '../services/helpers';
 export default class WriteReviewModal extends Component {
     constructor(props) {
         super(props)
@@ -49,8 +49,10 @@ export default class WriteReviewModal extends Component {
         try {
             if (this.props.actionType === 'edit') {
                 await updateUserReview(this.props.reviewId, this.state.review, this.props.receiverId);
+                flash('Review updated successfully', 'success');
             } else {
                 await createUserReview(this.props.receiverId, this.state.review);
+                flash('Review created successfully', 'success');
             }
             this.setState({
                 show: false,
@@ -60,7 +62,7 @@ export default class WriteReviewModal extends Component {
             this.props.refresh();
 
         } catch (error) {
-            console.log(error);
+            flash(error.message, 'error');
         }
     }
 

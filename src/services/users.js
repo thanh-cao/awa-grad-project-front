@@ -1,7 +1,8 @@
 const API_URL = process.env.REACT_APP_API_URL;
 
 export const getUserProfile = async (id) => {
-    return fetch(`${API_URL}/users/${id}`)
+    return fetch(`${API_URL}/users/${id}`,
+        { credentials: 'include' })
         .then(res => res.json());
 }
 
@@ -18,7 +19,8 @@ export const updateUserProfile = async (id, updatedUser) => {
 }
 
 export const getUserReviews = async (userId) => {
-    return fetch(`${API_URL}/users/${userId}/reviews`)
+    return fetch(`${API_URL}/users/${userId}/reviews`,
+        { credentials: 'include' })
         .then(res => res.json());
 }
 
