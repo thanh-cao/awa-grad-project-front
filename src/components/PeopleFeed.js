@@ -77,12 +77,6 @@ class PeopleFeed extends React.Component {
 
     return (
       <div className="people-feed pb-5">
-        <div className="menu-items">
-          <h5 style={{ textDecoration: "underline" }}>People</h5>
-          <h5>
-            <Link to={`/events/${search}`}>Events</Link>
-          </h5>
-        </div>
         <ul className="p-0">{peopleToDisplay}</ul>
       </div>
     );
