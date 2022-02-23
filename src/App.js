@@ -68,7 +68,7 @@ class App extends Component {
 
     return (
       <HashRouter>
-        <Header isAuthenticated={isAuthenticated} handleLogout={() => this.handleLogout()} />
+        <Header isAuthenticated={isAuthenticated} user={user} handleLogout={() => this.handleLogout()} />
 
         <FlashMessage />
 
