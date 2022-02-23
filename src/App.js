@@ -12,6 +12,7 @@ import Search from "./components/SearchPage";
 import ProfilePage from "./components/ProfilePage";
 import EditProfile from "./components/EditProfile";
 import FlashMessage from "./components/FlashMessage";
+import PageNotFound from "./components/PageNotFound";
 
 import { flash } from './services/helpers';
 import { authenticateUser, logoutUser } from "./services/userAuth";
@@ -155,6 +156,7 @@ class App extends Component {
               )
             }
           />
+          <Route path="*" component={PageNotFound} />
           {/* <Route path="/signup" component={SignUp} />
         <Route exact path="/" component={LandingPage} />
         <Route path="/login">
