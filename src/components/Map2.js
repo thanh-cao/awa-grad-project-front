@@ -12,7 +12,7 @@ const API_KEY = process.env.REACT_APP_GOOGLE_MAPS_API_KEY;
 
 
 const libraries = ["places"];
-const mapContainerStyle = { width: '100vw', height: '100vh' }
+const mapContainerStyle = { width: '100%', height: '100%' }
 const options = { disableDefaultUI: true, zoomControl: true }
 
 function getJSON(address) {
@@ -70,18 +70,19 @@ function Map2 (props) {
     if(!isLoaded) return 'Loading Map'
 
     return (
-      <GoogleMap 
-        mapContainerStyle={mapContainerStyle}
-        zoom={12}
-        center={location}
-        options={options}
-        >
+        <div style={{ height: "40vh", width: "100%" }}>
+            <GoogleMap 
+            mapContainerStyle={mapContainerStyle}
+            zoom={12}
+            center={location}
+            options={options}
+            >
             {markers.map(marker => (
             <Marker 
                 key={marker.id + (Math.random() * 1000)} 
                 position={{lat: marker.lat, lng: marker.lng}}
                 icon={{
-                    url: mapLogo,
+                    // url: mapLogo,
                     scaledSize: new window.google.maps.Size(20,20)
                 }}
                 onMouseOver={() => handleMouseOver(marker)}/>
@@ -99,6 +100,8 @@ function Map2 (props) {
             </InfoWindow>
             ) : null}
         </ GoogleMap>
+        </div>
+      
     )
 }
 
