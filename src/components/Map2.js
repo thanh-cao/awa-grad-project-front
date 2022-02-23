@@ -17,6 +17,7 @@ function Map2 (props) {
     
     const [location, setLocation] = useState({lat: 59.913868, lng: 10.752245});
     const [markers, setMarkers] = useState([])
+    const [selected, setSelected] = useState(null);
 
     useEffect(() => {
 
@@ -30,7 +31,7 @@ function Map2 (props) {
             
             getJSON(event.name)
             .then(data => {
-                const id = event.id + (Math.random() * 1000);
+                const id = event.id;
                 
                 const location = data.results[0].geometry.location;
                 setMarkers((current) => [...current, {lat: location.lat, lng: location.lng, id: id}])
@@ -40,6 +41,12 @@ function Map2 (props) {
 
     }, [props.search, props.events]);
 
+    function handleMouseOver(marker){
+        const events = props.events.filter(event => {
+            return event.id === marker.id;
+        })
+        setSelected({event: events[0].name, lat: marker.lat, lng: marker.lng});
+    }
 
     if(loadError) return 'Error loading map'
     if(!isLoaded) return 'Loading Map'
@@ -53,13 +60,26 @@ function Map2 (props) {
         >
             {markers.map(marker => (
             <Marker 
-                key={marker.id} 
+                key={marker.id + (Math.random() * 1000)} 
                 position={{lat: marker.lat, lng: marker.lng}}
                 icon={{
                     url: mapLogo,
                     scaledSize: new window.google.maps.Size(20,20)
-                }}/>
+                }}
+                onMouseOver={() => handleMouseOver(marker)}/>
             ))}
+
+            {selected ? (
+            <InfoWindow position={{lat: selected.lat, lng: selected.lng}} onCloseClick={()=>{
+                setSelected(null);
+            }}>
+                <div>
+                    <p>
+                        {selected.event}
+                    </p>
+                </div>
+            </InfoWindow>
+            ) : null}
         </ GoogleMap>
     )
 }
