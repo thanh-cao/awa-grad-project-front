@@ -1,8 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import Map2 from './Map2'
 import dateFormat from "dateformat";
-import {Link} from 'react-router-dom';
-// import { getEvents } from "../services/ticketmaster";
 
 
 function EventFeed2(props) {
@@ -12,7 +10,7 @@ function EventFeed2(props) {
     const endDate = dateFormat(date.setDate(date.getDate() + 1), 'isoUtcDateTime');
 
     useEffect(() => {
-       fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&locale=*&startDateTime=${startDate}&endDateTime=${endDate}&size=40&city=${props.search}`)
+       fetch(`https://app.ticketmaster.com/discovery/v2/events?apikey=7elxdku9GGG5k8j0Xm8KWdANDgecHMV0&locale=*&startDateTime=${startDate}&endDateTime=${endDate}&size=20&city=${props.search}`)
         .then(res => res.json())
         .then(data => {
             const events = data._embedded.events;
