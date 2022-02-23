@@ -138,7 +138,7 @@ class App extends Component {
             path="/user/:id/edit"
             render={props =>
               isAuthenticated ? (
-                <EditProfile {...props} />
+                <EditProfile {...props} loggedInUser={this.state.user} />
               ) : (
                 <Redirect to="/login" />
               )
@@ -149,7 +149,7 @@ class App extends Component {
             path="/user/:id"
             render={props =>
               isAuthenticated ? (
-                <ProfilePage {...props} />
+                <ProfilePage {...props} loggedInUser={this.state.user} />
               ) : (
                 <Redirect to="/login" />
               )

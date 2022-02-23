@@ -25,7 +25,6 @@ class ProfilePage extends React.Component {
         const { id } = this.props.match.params
         const user = await getUserProfile(id);
         const reviews = await getUserReviews(id);
-        console.log(reviews);
         this.setState({
             user,
             reviews,
@@ -55,7 +54,7 @@ class ProfilePage extends React.Component {
 
         const { id, name, createdAt, about, profilePicture, interests, languages, location } = this.state.user
         const { reviews } = this.state;
-        const firstName = name.split(' ')[0]
+        const firstName = name.split(' ')[0];
 
         const date = new Date(createdAt)
         const joined = dateFormat(date, 'mmmm, yyyy');
@@ -71,7 +70,7 @@ class ProfilePage extends React.Component {
                     receiverId={review.receiverId}
                     receiverName={name}
                     refresh={this.populateUserData.bind(this)}
-                // isAuthor={review.reviewer.id === loggedin.id} to be implemented
+                    isAuthor={review.reviewer.id === this.props.loggedInUser.id}
                 />
             )
         });
@@ -89,13 +88,15 @@ class ProfilePage extends React.Component {
                             <small>{reviews.count} Review{reviews.count > 1 ? 's' : null}</small>
                         </p>
 
-                        <WriteReviewModal
-                            receiverId={id}
-                            name={name}
-                            btnVariant="outline-primary"
-                            btnText={`Write a review to ${firstName}`}
-                            refresh={this.populateUserData.bind(this)}
-                        />
+                        {this.props.loggedInUser.id !== id && (
+                            <WriteReviewModal
+                                receiverId={id}
+                                name={name}
+                                btnVariant="outline-primary"
+                                btnText={`Write a review to ${firstName}`}
+                                refresh={this.populateUserData.bind(this)}
+                            />
+                        )}
                     </Col>
                 </Row>
                 <hr />
@@ -112,9 +113,11 @@ class ProfilePage extends React.Component {
                             <p><ChatQuote className="me-2 text-primary" />Speaks {languages}</p>
                         </div>
 
-                        <Link to={`/users/${id}/edit`} className="edit-profile-btn btn btn-outline-primary">
-                            Edit
-                        </Link>
+                        {this.props.loggedInUser.id === id && (
+                            <Link to={`/user/${id}/edit`} className="edit-profile-btn btn btn-outline-primary">
+                                Edit
+                            </Link>
+                        )}
                     </Col>
                 </Row>
                 <hr />

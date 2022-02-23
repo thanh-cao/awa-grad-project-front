@@ -8,13 +8,15 @@ import { deleteUserReview } from "../services/users";
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import WriteReviewModal from "./WriteReviewModel";
 
+import { flash } from "../services/helpers";
 export default class ReviewItem extends Component {
     async onDelete() {
         try {
             await deleteUserReview(this.props.reviewId, this.props.receiverId);
+            flash('Review deleted successfully', 'success');
             this.props.refresh();
         } catch (error) {
-            console.log(error);
+            flash(error.message, 'error');
         }
     }
 
@@ -43,14 +45,14 @@ export default class ReviewItem extends Component {
         return (
             <div className="review">
                 <div className="review-user">
-                    <Link to={`/users/${this.props.reviewer.id}/`}>
+                    <Link to={`/user/${this.props.reviewer.id}/`}>
                         <img src={this.props.reviewer.profilePicture ? this.props.reviewer.profilePicture : profilePlaceholder} alt={this.props.reviewer.name + ' profile picture'} />
                     </Link>
 
                     <div>
-                        <Link className="text-decoration-none" to={`/users/${this.props.reviewer.id}/`}>
+                        <Link className="text-decoration-none" to={`/user/${this.props.reviewer.id}/`}>
                             <p className="mb-0 fw-bold">
-                                {this.props.reviewer.name}, {this.props.reviewer.location}
+                                {this.props.reviewer.name}{this.props.reviewer.location && (', ' + this.props.reviewer.location)}
                             </p>
                         </Link>
                         <p className="mb-0">{reviewDate}</p>
@@ -59,7 +61,7 @@ export default class ReviewItem extends Component {
 
                 <p>{this.props.content}</p>
 
-                {!this.props.isAuthor && ( // visible now for development purposes. Adjust this line when implementing loggedin user
+                {this.props.isAuthor && (
                     <div className="py-2">
                         <WriteReviewModal
                             btnVariant="outline-primary"
