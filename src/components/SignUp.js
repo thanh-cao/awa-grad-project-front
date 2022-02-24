@@ -36,8 +36,7 @@ class SignUp extends React.Component {
         throw new Error(user.error);
       }
 
-      this.props.setAuth(true);
-      // this.props.setUser(user);
+      this.props.setAuth(true, user);
       flash('New user created successfully', 'success');
       this.props.history.push(`/user/${user.id}/edit`);
 
