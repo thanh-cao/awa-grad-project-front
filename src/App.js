@@ -42,15 +42,15 @@ class App extends Component {
     }
   }
 
-  setAuth(auth) {
+  setAuth(auth, user) {
     if (auth) {
       flash('Logged in successfully', 'success');
     } else {
       flash('Unable to authenticate', 'error');
     }
-    this.setState({ isAuthenticated: auth })
+    this.setState({ user, isAuthenticated: auth })
   }
-  
+
   async handleLogout() {
     try {
       await logoutUser();
@@ -76,8 +76,8 @@ class App extends Component {
           <Route exact path="/" component={LandingPage} />
           <Route
             path="/signup"
-            render={props => 
-            <SignUp {...props} setAuth={this.setAuth.bind(this)} />}
+            render={props =>
+              <SignUp {...props} setAuth={this.setAuth.bind(this)} />}
           />
           <Route
             exact

@@ -5,7 +5,7 @@ import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import placeholderImg from '../photos/placeholder-image.png';
 import AutocompleteText from './AutocompleteText';
 import { getUserProfile, updateUserProfile } from '../services/users';
-import { uploadImage } from '../services/helpers';
+import { uploadImage, flash } from '../services/helpers';
 
 class EditProfile extends React.Component {
     constructor(props) {
@@ -60,27 +60,15 @@ class EditProfile extends React.Component {
         }
         try {
             await updateUserProfile(id, updatedUser);
+            flash('Profile updated successfully', 'success');
             this.props.history.replace(`/user/${id}`);
         } catch (error) {
-            console.log(error);
+            flash('Something went wrong', 'error');
         }
     }
 
 
     handleChange(e, field) {
-        // let value = this.state.languages;
-        // let input = e.target.value;
-
-        // if (field === 'languages') {
-        //     if (value.includes(input)) {
-        //         return;
-        //     } else {
-        //         value.push(input)
-        //     }
-        // } else {
-        //     value = input;
-        // }
-
         this.setState({
             [field]: e.target.value
         })
@@ -101,20 +89,10 @@ class EditProfile extends React.Component {
         }
     }
 
-    removeLanguage(lang) {
-        const languages = this.state.languages;
-        const index = languages.indexOf(lang);
-        languages.splice(index, 1)
-
-        this.setState({ languages })
-
-    }
-
     async changeLocation(field, value, code) {
         let cityList = City.getCitiesOfCountry(code)
         this.setState({ [field]: value, countrycode: code, cityList })
     }
-
 
     render() {
         let { isLoading, profilePicture, about, interests, languages, country, city, countrycode, cityList, suggestions } = this.state;
@@ -161,7 +139,7 @@ class EditProfile extends React.Component {
                     </Form.Group>
 
                     <Form.Group>
-                        <Form.Label>Langauges</Form.Label>
+                        <Form.Label>Languages</Form.Label>
                         <Form.Control
                             type="text"
                             value={languages}

@@ -40,7 +40,7 @@ class Login extends React.Component {
         throw new Error(user.error);
       }
 
-      await this.props.setAuth(true)
+      await this.props.setAuth(true, user);
       this.props.history.replace('/search');
 
     } catch (error) {
