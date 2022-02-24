@@ -1,6 +1,7 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@100;400;500&display=swap");
 @import "./css/profilePage.css";
 @import "./css/editProfile.css";
+@import "./css/header.css";
 
 .App {
   text-align: center;
