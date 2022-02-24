@@ -18,7 +18,7 @@ class EditProfile extends React.Component {
             profilePicture: null,
             about: ' ',
             interests: ' ',
-            languages: [],
+            languages: '',
             countrycode: '',
             country: '',
             city: '',
@@ -60,7 +60,7 @@ class EditProfile extends React.Component {
         }
         try {
             await updateUserProfile(id, updatedUser);
-            this.props.history.replace(`/users/${id}`);
+            this.props.history.replace(`/user/${id}`);
         } catch (error) {
             console.log(error);
         }
@@ -68,21 +68,21 @@ class EditProfile extends React.Component {
 
 
     handleChange(e, field) {
-        let value = this.state.languages;
-        let input = e.target.value;
+        // let value = this.state.languages;
+        // let input = e.target.value;
 
-        if (field === 'languages') {
-            if (value.includes(input)) {
-                return;
-            } else {
-                value.push(input)
-            }
-        } else {
-            value = input;
-        }
+        // if (field === 'languages') {
+        //     if (value.includes(input)) {
+        //         return;
+        //     } else {
+        //         value.push(input)
+        //     }
+        // } else {
+        //     value = input;
+        // }
 
         this.setState({
-            [field]: value
+            [field]: e.target.value
         })
     }
 
@@ -129,7 +129,7 @@ class EditProfile extends React.Component {
                     encType="multipart/form-data"
                     onSubmit={(e) => this.handleSubmit(e)}>
                     <Form.Group className="imageUpload">
-                        {profilePicture ? <img src={profilePicture} /> : <img src={placeholderImg}/>}
+                        {profilePicture ? <img src={profilePicture} alt="profile" /> : <img src={placeholderImg} alt="profile"/>}
                         
                         <Form.Label>Upload profile picture</Form.Label>
                         <Form.Control
@@ -160,15 +160,14 @@ class EditProfile extends React.Component {
                         />
                     </Form.Group>
 
-                    {/* <Form.Group>
-                        <Form.Label>Languages</Form.Label>
+                    <Form.Group>
+                        <Form.Label>Langauges</Form.Label>
                         <Form.Control
-                            as="textarea"
-                            rows="3"
+                            type="text"
                             value={languages}
                             onChange={(e) => this.handleChange(e, 'languages')}
                         />
-                    </Form.Group> */}
+                    </Form.Group>
                     <Row>
                         <Col>
                             <AutocompleteText
@@ -197,96 +196,6 @@ class EditProfile extends React.Component {
                         Cancel
                     </Button>
                 </Form>
-                {/* <form
-                    encType="multipart/form-data"
-                    className="edit-form"
-                    onSubmit={(e) => this.handleSubmit(e)}>
-                    <div className="imageUpload">
-                        {profilePicture && <img src={profilePicture} />}
-                        {!profilePicture && <img src={placeholderImg} />}
-                        <input
-                            type="file"
-                            id="profilePicture"
-                            name="profilePicture"
-                            onChange={(e) => this.handleFileUpload(e)}
-                        ></input>
-                    </div>
-                    <div>
-                        <label>About me</label>
-                        <textarea
-                            rows="4"
-                            value={about}
-                            onChange={(e) => this.handleChange(e, 'about')}
-                        ></textarea>
-                    </div>
-                    <div>
-                        <label>Interests</label>
-                        <textarea
-                            rows="4"
-                            value={interests}
-                            onChange={(e) => this.handleChange(e, 'interests')}
-                        ></textarea>
-                    </div>
-                    <div className="location">
-                        <p>Location</p>
-                        <div className="country">
-                            <label>Country</label>
-                            <AutocompleteText
-                                items={this.countries}
-                                currentValue={country}
-                                onLocationChange={this.changeLocation.bind(this)}
-                                type={'country'}
-                                countrycode={countrycode} />
-
-                            <input 
-                            type="text" 
-                            value={country}
-                            onChange={(e) => this.handleChange(e, 'country')}
-                            />
-                            {activeInput === 'country' && <div style={{background: 'rgb(240,240,240)', margin: 0}}>{suggestions}</div>}
-                        </div>
-                        <div className="city">
-                            <label>City</label>
-                            <AutocompleteText
-                                items={cityList}
-                                currentValue={city}
-                                onLocationChange={this.changeLocation.bind(this)}
-                                type={'city'}
-                                countrycode={countrycode} />
-
-                            <input 
-                            disabled={countrycode === ''}
-                            type="text" 
-                            value={city}
-                            onChange={(e) => this.handleChange(e, 'city')}
-                            />
-                            {activeInput === 'city' && <div>{suggestions}</div>} 
-                        </div>
-                    </div>
-                    <div>
-                        <label>Languages</label>
-                        <div>
-                            {languages && languages.map((lang, i) => {
-                                return (
-                                    <p key={i}><button className="remove-language" onClick={() => this.removeLanguage(lang)}>x</button><small>{lang}</small></p>
-                                )
-                            })}
-                        </div>
-                        <select
-                            onChange={(e) => this.handleChange(e, 'languages')}
-                        >
-                            <option>English</option>
-                            <option>Norwegian</option>
-                            <option>Swedish</option>
-                            <option>Spanish</option>
-                            <option>German</option>
-                        </select>
-                    </div>
-                    <button
-                        className="save-btn btn"
-                        type="submit">Save</button>
-                    <button className="cancel-btn btn">Cancel</button>
-                </form> */}
             </Container>
         )
     }
