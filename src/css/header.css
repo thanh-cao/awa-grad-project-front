@@ -6,12 +6,12 @@
   border: none;
 }
 
-.navbar-nav a {
+.navbar-nav .nav-link {
   margin: 20px;
   font-size: 20px;
   text-align: center;
 }
-.navbar-nav a:hover {
+.navbar-nav .nav-link:hover {
   color: #fdbb2d;
 }
 
