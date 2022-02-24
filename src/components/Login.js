@@ -1,6 +1,7 @@
 import React from 'react';
-import {Button, Form} from 'react-bootstrap';
+import { Button, Form } from 'react-bootstrap';
 
+import { flash } from '../services/helpers';
 const { loginUser } = require('../services/userAuth');
 
 class Login extends React.Component {
@@ -27,6 +28,11 @@ class Login extends React.Component {
   async handleSubmit(event) {
     event.preventDefault();
     const { email, password } = this.state;
+    if (!email || !password) {
+      flash('Please fill in all fields', 'error');
+      return;
+    }
+
     try {
       const user = await loginUser(email, password);
 
@@ -38,22 +44,22 @@ class Login extends React.Component {
       this.props.history.replace('/search');
 
     } catch (error) {
-      console.log(error);
+      flash(error.message, 'error');
     }
   }
-  
+
 
   render() {
     return (
-        <div className='w-50 m-auto my-5'>       
-            <h1 className='logInH1'>Login</h1>
-            <Form onSubmit={this.handleSubmit}>
-                <Form.Control name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name'/>
-                <br></br> 
-                <Form.Control name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass'/>
-                <br></br>
-                <Button type="submit" variant="outline-primary">Log in here</Button>
-            </Form> 
+      <div className='w-50 m-auto my-5'>
+        <h1 className='logInH1'>Login</h1>
+        <Form onSubmit={this.handleSubmit}>
+          <Form.Control name='email' onChange={this.handleChange} type="text" placeholder='E-mail' id='name' />
+          <br></br>
+          <Form.Control name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass' />
+          <br></br>
+          <Button type="submit" variant="outline-primary">Log in here</Button>
+        </Form>
       </div>
     );
   }
