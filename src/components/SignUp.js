@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 
 import { flash } from '../services/helpers';
@@ -71,6 +72,7 @@ class SignUp extends React.Component {
           <Button
             className="logInButton"
             onClick={() => this.handleSignup()}>Sign up</Button>
+          <p>Already have an account? <Link to='/login'>Log in</Link></p>
         </Form>
       </div>
     );

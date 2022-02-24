@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Button, Form } from 'react-bootstrap';
 
 import { flash } from '../services/helpers';
@@ -59,6 +60,7 @@ class Login extends React.Component {
           <Form.Control name='password' onChange={this.handleChange} type="password" placeholder='Password' id='pass' />
           <br></br>
           <Button type="submit" variant="outline-primary">Log in here</Button>
+          <p>Don't have an account? <Link to='/signup'>Sign up</Link></p>
         </Form>
       </div>
     );
