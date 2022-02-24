@@ -1,0 +1,21 @@
+.navbar-light .navbar-toggler {
+    border: none;
+    margin-right: 20px;
+
+    &:hover {
+        border: none;
+    }
+
+}
+
+.navbar-nav { 
+    a {
+        margin: 20px;
+        font-size: 20px;
+        text-align: center;
+        
+        &:hover {
+            color: #fdbb2d;
+        }
+    }
+}
