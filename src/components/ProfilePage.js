@@ -52,7 +52,7 @@ class ProfilePage extends React.Component {
             return <div>Loading....</div>
         }
 
-        const { id, name, createdAt, about, profilePicture, interests, languages, location } = this.state.user
+        const { id, name, createdAt, about, profilePicture, interests, languages, location, facebook } = this.state.user
         const { reviews } = this.state;
         const firstName = name.split(' ')[0];
 
@@ -97,6 +97,7 @@ class ProfilePage extends React.Component {
                                 refresh={this.populateUserData.bind(this)}
                             />
                         )}
+                        <a href={`http://m.me/${facebook}"`} className="messenger-chat" target="_blank" rel="noreferrer"><Button variant="outline-primary" className="contact-btn">Contact {firstName}</Button></a>
                     </Col>
                 </Row>
                 <hr />
