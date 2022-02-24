@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from "react-router-dom";
 import dateFormat from "dateformat";
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { HouseDoor, ChatQuote } from 'react-bootstrap-icons';
+import { HouseDoor, ChatQuote, Messenger, Instagram, Twitter } from 'react-bootstrap-icons';
 
 import profilePlaceholder from "../photos/profilePlaceholder.png";
 import { getUserProfile, getUserReviews } from "../services/users";
@@ -24,6 +24,7 @@ class ProfilePage extends React.Component {
     async populateUserData() {
         const { id } = this.props.match.params
         const user = await getUserProfile(id);
+        console.log(user);
         const reviews = await getUserReviews(id);
         this.setState({
             user,
@@ -52,11 +53,13 @@ class ProfilePage extends React.Component {
             return <div>Loading....</div>
         }
 
-        const { id, name, createdAt, about, profilePicture, interests, languages, location, facebook } = this.state.user
+        const { id, name, createdAt, about, profilePicture, interests, languages, location } = this.state.user;
+        const { facebook, instagram, twitter } = this.state.user.ContactInfo;
+
         const { reviews } = this.state;
         const firstName = name.split(' ')[0];
 
-        const date = new Date(createdAt)
+        const date = new Date(createdAt);
         const joined = dateFormat(date, 'mmmm, yyyy');
 
         const reviewList = reviews.rows.map(review => {
@@ -72,14 +75,43 @@ class ProfilePage extends React.Component {
                     refresh={this.populateUserData.bind(this)}
                     isAuthor={review.reviewer.id === this.props.loggedInUser.id}
                 />
-            )
+            );
         });
+
+        const contactInfo = (
+            <div className="contact-info">
+                {facebook && (
+                    <div className="d-inline">
+                        <a href={`http://m.me/${facebook}`} target="_blank" rel="noopener noreferrer">
+                            <Messenger className="contact-info-icon" />
+                        </a>
+                    </div>
+                )}
+                {instagram && (
+                    <div className="d-inline">
+                        <a href={`https://www.instagram.com/${instagram}`} target="_blank" rel="noopener noreferrer">
+                            <Instagram className="contact-info-icon" />
+                        </a>
+                    </div>
+                )}
+                {twitter && (
+                    <div className="d-inline">
+                        <a href={`https://www.twitter.com/${twitter}`} target="_blank" rel="noopener noreferrer">
+                            <Twitter className="contact-info-icon" />
+                        </a>
+                    </div>
+                )}
+            </div>
+        )
+
+
 
         return (
             <Container className="profile-page px-4">
                 <Row>
                     <Col xs={5} md={5} className="text-center offset-md-1">
                         <img src={profilePicture ? profilePicture : profilePlaceholder} alt={firstName + ' profile'} />
+                        {/* <div className="d-md-none d-block">{contactInfo}</div> */}
                     </Col>
                     <Col xs={7} md={6}>
                         <h2>Hi, I'm {firstName}</h2>
@@ -89,15 +121,20 @@ class ProfilePage extends React.Component {
                         </p>
 
                         {this.props.loggedInUser.id !== id && (
-                            <WriteReviewModal
-                                receiverId={id}
-                                name={name}
-                                btnVariant="outline-primary"
-                                btnText={`Write a review to ${firstName}`}
-                                refresh={this.populateUserData.bind(this)}
-                            />
+                            <>
+                                <WriteReviewModal
+                                    receiverId={id}
+                                    name={name}
+                                    btnVariant="outline-primary"
+                                    btnText={`Write a review to ${firstName}`}
+                                    refresh={this.populateUserData.bind(this)}
+                                />
+                                {/* <a href={`http://m.me/${facebook}"`} className="btn btn-outline-primary mt-2" target="_blank" rel="noreferrer">
+                                        Contact {firstName}
+                                    </a> */}
+                            </>
                         )}
-                        <a href={`http://m.me/${facebook}"`} className="messenger-chat" target="_blank" rel="noreferrer"><Button variant="outline-primary" className="contact-btn">Contact {firstName}</Button></a>
+                        {contactInfo}
                     </Col>
                 </Row>
                 <hr />

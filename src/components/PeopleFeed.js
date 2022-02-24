@@ -53,8 +53,8 @@ class PeopleFeed extends React.Component {
               <div className="card-bg-gradient"></div>
               <div className="card-body bg-white d-flex">
                 <div>
-                  {person.profilePicture && <img src={person.profilePicture} alt="profile"/>}
-                  {!person.profilePicture && <img src={malePhoto} alt="profile"/>}
+                  {person.profilePicture && <img src={person.profilePicture} className="rounded-circle" alt="profile"/>}
+                  {!person.profilePicture && <img src={malePhoto} className="rounded-circle" alt="profile"/>}
                 </div>
                 <div className="mx-4">
                   <h3>{person.name}</h3>

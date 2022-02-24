@@ -23,7 +23,10 @@ class EditProfile extends React.Component {
             country: '',
             city: '',
             cityList: [],
-            suggestions: []
+            suggestions: [],
+            facebook: '',
+            instagram: '',
+            twitter: ''
         }
     }
 
@@ -41,6 +44,9 @@ class EditProfile extends React.Component {
             countrycode: user.countrycode,
             country: user.location?.split(', ')[1],
             city: user.location?.split(', ')[0],
+            facebook: user.ContactInfo.facebook || '',
+            instagram: user.ContactInfo.instagram || '',
+            twitter: user.ContactInfo.twitter || '',
             cityList
         })
     }
@@ -56,8 +62,12 @@ class EditProfile extends React.Component {
             interests: this.state.interests,
             languages: this.state.languages,
             countrycode: this.state.countrycode,
-            location: `${this.state.city}, ${this.state.country}`
+            location: `${this.state.city}, ${this.state.country}`,
+            facebook: this.state.facebook,
+            instagram: this.state.instagram,
+            twitter: this.state.twitter
         }
+
         try {
             await updateUserProfile(id, updatedUser);
             flash('Profile updated successfully', 'success');
@@ -95,7 +105,10 @@ class EditProfile extends React.Component {
     }
 
     render() {
-        let { isLoading, profilePicture, about, interests, languages, country, city, countrycode, cityList, suggestions } = this.state;
+        let { isLoading, profilePicture, about, interests, languages,
+            country, city, countrycode, cityList, suggestions,
+            facebook, instagram, twitter
+        } = this.state;
 
         if (isLoading) {
             return <div>Loading...</div>
@@ -107,8 +120,8 @@ class EditProfile extends React.Component {
                     encType="multipart/form-data"
                     onSubmit={(e) => this.handleSubmit(e)}>
                     <Form.Group className="imageUpload">
-                        {profilePicture ? <img src={profilePicture} alt="profile" /> : <img src={placeholderImg} alt="profile"/>}
-                        
+                        {profilePicture ? <img src={profilePicture} alt="profile" /> : <img src={placeholderImg} alt="profile" />}
+
                         <Form.Label>Upload profile picture</Form.Label>
                         <Form.Control
                             type="file"
@@ -164,6 +177,37 @@ class EditProfile extends React.Component {
                                 onLocationChange={this.changeLocation.bind(this)}
                                 type={'city'}
                                 countrycode={countrycode} />
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <div className="fw-bold fs-5">Social media handles</div>
+                        <Col xs={6} md={4}>
+                            <Form.Label>Facebook</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={facebook}
+                                placeholder="ola-nordmann.07"
+                                onChange={(e) => this.handleChange(e, 'facebook')}
+                            />
+                        </Col>
+                        <Col xs={6} md={4}>
+                            <Form.Label>Instagram</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={instagram}
+                                placeholder="olayeah"
+                                onChange={(e) => this.handleChange(e, 'instagram')}
+                            />
+                        </Col>
+                        <Col xs={6} md={4}>
+                            <Form.Label>Twitter</Form.Label>
+                            <Form.Control
+                                type="text"
+                                value={twitter}
+                                placeholder="ola_nordmann"
+                                onChange={(e) => this.handleChange(e, 'twitter')}
+                            />
                         </Col>
                     </Row>
 
