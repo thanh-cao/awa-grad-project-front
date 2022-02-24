@@ -73,11 +73,15 @@ class App extends Component {
         <FlashMessage />
 
         <Switch>
-          <Route exact path="/" component={LandingPage} />
+          <Route exact path="/" render={props => <LandingPage {...props} isAuthenticated={isAuthenticated}/>} />
           <Route
             path="/signup"
             render={props =>
-              <SignUp {...props} setAuth={this.setAuth.bind(this)} />}
+              isAuthenticated ? (
+                <Redirect to="/search" />
+              ) : (
+              <SignUp {...props} setAuth={this.setAuth.bind(this)} />
+            )}
           />
           <Route
             exact
@@ -86,7 +90,7 @@ class App extends Component {
               !isAuthenticated ? (
                 <Login {...props} setAuth={this.setAuth.bind(this)} />
               ) : (
-                <Redirect to="/" />
+                <Redirect to="/search" />
               )
             }
           />
@@ -157,19 +161,6 @@ class App extends Component {
             }
           />
           <Route path="*" component={PageNotFound} />
-          {/* <Route path="/signup" component={SignUp} />
-        <Route exact path="/" component={LandingPage} />
-        <Route path="/login">
-          <Login
-          handleAuthentication={this.handleAthentication.bind(this)}/>
-        </Route>
-        <ProtectedRoutes path="/people" component={peopleFeed} /> 
-        <ProtectedRoutes path="/events" component={EventFeed} />
-        <ProtectedRoutes path="/search" component={Search} />
-        <ProtectedRoutes path="/users/:id/edit" component={EditProfile} />
-        <ProtectedRoutes path="/users/:id" component={ProfilePage} /> */}
-
-
         </Switch>
 
         <Footer />
